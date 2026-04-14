@@ -526,54 +526,64 @@ namespace Robust.Shared.Network
                 var recycle = true;
                 while ((msg = peer.Peer.ReadMessage()) != null)
                 {
-                    countProcessed += 1;
-                    switch (msg.MessageType)
+                    try
                     {
-                        case NetIncomingMessageType.VerboseDebugMessage:
-                            _logger.Debug("{PeerAddress}: {Message}", peer.Peer.Configuration.LocalAddress,
-                                msg.ReadString());
-                            break;
+                        countProcessed += 1;
+                        switch (msg.MessageType)
+                        {
+                            case NetIncomingMessageType.VerboseDebugMessage:
+                                _logger.Debug("{PeerAddress}: {Message}", peer.Peer.Configuration.LocalAddress,
+                                    msg.ReadString());
+                                break;
 
-                        case NetIncomingMessageType.DebugMessage:
-                            _logger.Info("{PeerAddress}: {Message}", peer.Peer.Configuration.LocalAddress,
-                                msg.ReadString());
-                            break;
+                            case NetIncomingMessageType.DebugMessage:
+                                _logger.Info("{PeerAddress}: {Message}", peer.Peer.Configuration.LocalAddress,
+                                    msg.ReadString());
+                                break;
 
-                        case NetIncomingMessageType.WarningMessage:
-                            _logger.Warning("{PeerAddress}: {Message}", peer.Peer.Configuration.LocalAddress,
-                                msg.ReadString());
-                            break;
+                            case NetIncomingMessageType.WarningMessage:
+                                _logger.Warning("{PeerAddress}: {Message}", peer.Peer.Configuration.LocalAddress,
+                                    msg.ReadString());
+                                break;
 
-                        case NetIncomingMessageType.ErrorMessage:
-                            _logger.Error("{PeerAddress}: {Message}", peer.Peer.Configuration.LocalAddress,
-                                msg.ReadString());
-                            break;
+                            case NetIncomingMessageType.ErrorMessage:
+                                _logger.Error("{PeerAddress}: {Message}", peer.Peer.Configuration.LocalAddress,
+                                    msg.ReadString());
+                                break;
 
-                        case NetIncomingMessageType.ConnectionApproval:
-                            HandleApproval(msg);
-                            recycle = false;
-                            break;
+                            case NetIncomingMessageType.ConnectionApproval:
+                                HandleApproval(msg);
+                                recycle = false;
+                                break;
 
-                        case NetIncomingMessageType.Data:
-                            countDataProcessed += 1;
-                            recycle = DispatchNetMessage(msg);
-                            break;
+                            case NetIncomingMessageType.Data:
+                                countDataProcessed += 1;
+                                recycle = DispatchNetMessage(msg);
+                                break;
 
-                        case NetIncomingMessageType.StatusChanged:
-                            HandleStatusChanged(peer, msg);
-                            break;
+                            case NetIncomingMessageType.StatusChanged:
+                                HandleStatusChanged(peer, msg);
+                                break;
 
-                        default:
-                            _logger.Warning("{0}: Unhandled incoming packet type from {1}: {2}",
-                                peer.Peer.Configuration.LocalAddress,
-                                msg.SenderConnection?.RemoteEndPoint,
-                                msg.MessageType);
-                            break;
+                            default:
+                                _logger.Warning("{0}: Unhandled incoming packet type from {1}: {2}",
+                                    peer.Peer.Configuration.LocalAddress,
+                                    msg.SenderConnection?.RemoteEndPoint,
+                                    msg.MessageType);
+                                break;
+                        }
+
+                        if (recycle)
+                        {
+                            peer.Peer.Recycle(msg);
+                        }
                     }
-
-                    if (recycle)
+                    catch (Exception e)
                     {
-                        peer.Peer.Recycle(msg);
+                        if (msg.SenderConnection is { } sender)
+                        {
+                            sender.Disconnect("Your client sent a malformed packet!");
+                        }
                     }
                 }
 
