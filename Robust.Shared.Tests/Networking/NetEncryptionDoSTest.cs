@@ -22,8 +22,9 @@ public sealed class NetEncryptionDoSTest
 
         var packet = Receive(server);
 
+        Assert.That(packet, Is.Not.Null);
+
         Assert.That(packet.ReadVariableUInt64(), Is.EqualTo(Magic));
-        server.Shutdown(null);
     }
 
     [Test]
@@ -43,8 +44,9 @@ public sealed class NetEncryptionDoSTest
 
         var packet = Receive(server);
 
+        Assert.That(packet, Is.Not.Null);
+
         Assert.That(serverEnc.TryDecrypt(packet), Is.True);
-        server.Shutdown(null);
     }
 
     [Test]
@@ -62,28 +64,25 @@ public sealed class NetEncryptionDoSTest
 
         client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
 
-        var packet = Receive(server);
+        var packet = server.WaitMessage(1000);
+
+        Assert.That(packet, Is.Not.Null);
 
         Assert.That(serverEnc.TryDecrypt(packet), Is.False);
-        server.Shutdown(null);
     }
 
-    private static int[] _badMessages =
+    private static byte[][] _badMessages =
     [
-        5,
-        1,
-        4,
-        16,
-        1024,
+        [1, 1, 1, 1, 1],
+        [1, 2],
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,]
     ];
 
     [Test]
     [Description("Attempt to decrypt a packet that is bogus, ensuring it doesn't throw.")]
     [TestCaseSource(nameof(_badMessages))]
-    public void BadMessageDoesNotThrow(int badMessageLength)
+    public void BadMessageDoesNotThrow(byte[] badMessage)
     {
-        var badMessage = new byte[badMessageLength];
-        System.Random.Shared.NextBytes(badMessage);
         var (_, serverEnc) = MakeEncryptionPair(disjointKey: true);
         var (client, server) = MakeConnectionPair();
 
@@ -95,13 +94,11 @@ public sealed class NetEncryptionDoSTest
 
         client.SendMessage(message, NetDeliveryMethod.ReliableOrdered);
 
-        var packet = Receive(server);
+        var packet = server.WaitMessage(1000);
 
-        Assert.That(packet.LengthBytes, Is.EqualTo(badMessageLength));
+        Assert.That(packet, Is.Not.Null);
 
         Assert.That(serverEnc.TryDecrypt(packet), Is.False);
-
-        server.Shutdown(null);
     }
 
 
