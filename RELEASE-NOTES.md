@@ -43,7 +43,7 @@ END TEMPLATE-->
 
 ### Bugfixes
 
-*None yet*
+* Fixed clients being unable to connect to dev servers.
 
 ### Other
 
@@ -52,13 +52,6 @@ END TEMPLATE-->
 ### Internal
 
 *None yet*
-
-
-## 275.2.0
-
-### Bugfixes
-
-* Fixed clients being unable to connect to dev servers.
 
 
 ## 275.1.0
