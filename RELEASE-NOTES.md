@@ -43,7 +43,7 @@ END TEMPLATE-->
 
 ### Bugfixes
 
-*None yet*
+* Fixed a DoS exploit related to decrypting network packets.
 
 ### Other
 
@@ -52,13 +52,6 @@ END TEMPLATE-->
 ### Internal
 
 *None yet*
-
-
-## 275.1.0
-
-### Bugfixes
-
-* Fixed a DoS exploit related to decrypting network packets.
 
 
 ## 275.0.0
