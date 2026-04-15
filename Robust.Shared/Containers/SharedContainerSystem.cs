@@ -72,7 +72,6 @@ namespace Robust.Shared.Containers
 
             foreach (var container in component.Containers.Values)
             {
-                EnsureAllValid(container);
                 var uidArr = new NetEntity[container.ContainedEntities.Count];
 
                 for (var index = 0; index < container.ContainedEntities.Count; index++)
