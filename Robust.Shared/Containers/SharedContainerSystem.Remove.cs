@@ -44,7 +44,10 @@ public abstract partial class SharedContainerSystem
         DebugTools.Assert(Exists(toRemove), "toRemove does not exist");
 
         if (!force && !CanRemove(toRemove, container))
+        {
+            EnsureAllValid(container);
             return false;
+        }
 
         if (force && !container.Contains(toRemove))
         {
@@ -104,6 +107,7 @@ public abstract partial class SharedContainerSystem
         DebugTools.Assert(destination == null || xform.Coordinates.Equals(destination.Value), $"Failed to set coordinates of {ToPrettyString(toRemove, meta)} to be inside {ToPrettyString(container.Owner)} container '{container.ID}'");
 
         Dirty(container.Owner, container.Manager);
+        EnsureAllValid(container);
         return true;
     }
 
