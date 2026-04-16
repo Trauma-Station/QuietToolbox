@@ -63,10 +63,7 @@ public abstract partial class SharedContainerSystem
 
         //Verify we can insert into this container
         if (!force && !CanInsert(uid, container, containerXform: containerXform))
-        {
-            EnsureAllValid(container);
             return false;
-        }
 
         if (meta.EntityLifeStage >= EntityLifeStage.Terminating)
         {
