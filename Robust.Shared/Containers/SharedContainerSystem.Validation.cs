@@ -1,7 +1,6 @@
 using Robust.Shared.GameObjects;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Utility;
-using System;
 
 namespace Robust.Shared.Containers;
 
@@ -9,21 +8,10 @@ namespace Robust.Shared.Containers;
 // This partial class just exists for debug asserts and bug fixing
 public abstract partial class SharedContainerSystem : EntitySystem
 {
-    // temporary debugging measure for server
-    public void EnsureAllValid(BaseContainer container)
-    {
-        foreach (var uid in container.ContainedEntities)
-        {
-            if (Deleted(uid))
-                Log.Error($"Found deleted entity {uid} inside {ToPrettyString(container.Owner)}:{container.ID}! Stack trace: {Environment.StackTrace}");
-        }
-    }
-
     private void OnStartupValidation(EntityUid uid, ContainerManagerComponent component, ComponentStartup args)
     {
         foreach (var cont in component.Containers.Values)
         {
-            EnsureAllValid(cont);
             foreach (var ent in cont.ContainedEntities)
             {
                 if (!MetaQuery.TryGetComponent(ent, out var meta))

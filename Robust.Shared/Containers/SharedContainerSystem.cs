@@ -61,7 +61,6 @@ namespace Robust.Shared.Containers
             foreach (var (id, container) in ent.Comp.Containers)
             {
                 container.Init(this, id, ent);
-                EnsureAllValid(container);
             }
         }
 
@@ -191,7 +190,6 @@ namespace Robust.Shared.Containers
             DebugTools.AssertEqual(container.ID, id);
             DebugTools.AssertNotNull(container.Manager);
             DebugTools.AssertNotEqual(container.Owner, EntityUid.Invalid);
-            EnsureAllValid(container);
             return true;
         }
 
@@ -212,7 +210,6 @@ namespace Robust.Shared.Containers
             {
                 if (contain.Contains(containedUid))
                 {
-                    EnsureAllValid(contain);
                     container = contain;
                     return true;
                 }
@@ -609,7 +606,6 @@ namespace Robust.Shared.Containers
             EntityCoordinates? destination = null,
             bool reparent = true)
         {
-            EnsureAllValid(container);
             var removed = new List<EntityUid>(container.ContainedEntities);
             for (var i = removed.Count - 1; i >= 0; i--)
             {
@@ -629,7 +625,6 @@ namespace Robust.Shared.Containers
         /// </summary>
         public void CleanContainer(BaseContainer container)
         {
-            EnsureAllValid(container);
             foreach (var ent in container.ContainedEntities.ToArray())
             {
                 if (Deleted(ent))
@@ -654,7 +649,6 @@ namespace Robust.Shared.Containers
 
         private bool TryInsertIntoContainer(Entity<TransformComponent> transform, BaseContainer container)
         {
-            EnsureAllValid(container);
             if (Insert((transform.Owner, transform.Comp, null, null), container))
                 return true;
 
@@ -700,7 +694,6 @@ namespace Robust.Shared.Containers
             if (_timing.ApplyingState)
                 return; // Entity might not yet have had its state updated.
 
-            EnsureAllValid(container);
             var flags = MetaData(uid).Flags;
             DebugTools.Assert((flags & MetaDataFlags.InContainer) != 0,
                 $"Entity has bad container flags. Ent: {ToPrettyString(uid)}. Container: {container.ID}, Owner: {ToPrettyString(container.Owner)}");
