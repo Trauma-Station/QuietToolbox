@@ -1572,8 +1572,11 @@ public abstract partial class SharedTransformSystem
             DebugTools.Assert(!xform.Anchored,
                 $"Entity is anchored but has no parent? Entity: {ToPrettyString(uid)}");
 
-            DebugTools.Assert((MetaData(uid).Flags & MetaDataFlags.InContainer) == 0x0,
-                $"Entity is in a container but has no parent? Entity: {ToPrettyString(uid)}");
+            if ((MetaData(uid).Flags & MetaDataFlags.InContainer) != 0x0)
+            {
+                Log.Error($"Entity is in a container but has no parent? Entity: {ToPrettyString(uid)}. Trace: {Environment.StackTrace}");
+                return;
+            }
 
             DebugTools.Assert(
                 xform.Broadphase == null
@@ -1608,8 +1611,10 @@ public abstract partial class SharedTransformSystem
 
         SetCoordinates((uid, xform, meta), default, Angle.Zero, oldParent: oldXform);
 
-        DebugTools.Assert((meta.Flags & MetaDataFlags.InContainer) == 0x0,
-            $"Entity is in a container after having been detached to null-space? Entity: {ToPrettyString(uid)}");
+        if ((meta.Flags & MetaDataFlags.InContainer) != 0x0)
+        {
+            Log.Error($"Entity is in a container after having been detached to null-space? Entity: {ToPrettyString(uid)}. Old parent: {ToPrettyString(parent)}. Trace: {Environment.StackTrace}");
+        }
     }
 
     #endregion
