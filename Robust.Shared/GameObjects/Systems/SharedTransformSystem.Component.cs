@@ -1609,11 +1609,12 @@ public abstract partial class SharedTransformSystem
             RaiseLocalEvent(uid, ref anchorStateChangedEvent, true);
         }
 
+        var oldCoords = xform.Coordinates;
         SetCoordinates((uid, xform, meta), default, Angle.Zero, oldParent: oldXform);
 
         if ((meta.Flags & MetaDataFlags.InContainer) != 0x0)
         {
-            Log.Error($"Entity is in a container after having been detached to null-space? Entity: {ToPrettyString(uid)}. Old parent: {ToPrettyString(parent)}. Trace: {Environment.StackTrace}");
+            Log.Error($"Entity is in a container after having been detached to null-space? Entity: {ToPrettyString(uid)}. Old parent: {ToPrettyString(parent)}, old coords: {oldCoords} Initialized={xform.Initialized}\nNew parent: {ToPrettyString(xform._parent)} new coords: {xform.Coordinates}\nTrace: {Environment.StackTrace}");
         }
     }
 
