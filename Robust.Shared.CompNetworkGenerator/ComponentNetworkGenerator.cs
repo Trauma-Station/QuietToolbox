@@ -212,7 +212,7 @@ namespace Robust.Shared.CompNetworkGenerator
                         stateFields.Append($@"
         public {networkedType} {name} = default!;");
 
-                        getField = $"GetNetEntity(component.{name}, ToPrettyString(uid) + \":{name}\")";
+                        getField = $"GetNetEntity(component.{name})";
                         cast = $"(NetEntity{nullableAnnotation})";
 
                         handleStateSetters.Append($@"
@@ -255,7 +255,7 @@ namespace Robust.Shared.CompNetworkGenerator
                         stateFields.Append($@"
         public {networkedType} {name} = default!;");
 
-                        getField = $"GetNetEntitySet(component.{name}, ToPrettyString(uid) + \":{name}\")";
+                        getField = $"GetNetEntitySet(component.{name})";
                         cast = $"({GlobalNetEntityUidSetName})";
 
                         handleStateSetters.Append($@"
@@ -276,7 +276,7 @@ namespace Robust.Shared.CompNetworkGenerator
                         stateFields.Append($@"
                         public {networkedType} {name} = default!;");
 
-                        getField = $"GetNetEntityList(component.{name}, ToPrettyString(uid) + \":{name}\")";
+                        getField = $"GetNetEntityList(component.{name})";
                         cast = $"({GlobalNetEntityUidListName})";
 
                         handleStateSetters.Append($@"
@@ -317,7 +317,7 @@ namespace Robust.Shared.CompNetworkGenerator
                                 stateFields.Append($@"
         public {networkedType} {name} = default!;");
 
-                                getField = $"GetNetEntityDictionary(component.{name}, ToPrettyString(uid) + \":{name}\")";
+                                getField = $"GetNetEntityDictionary(component.{name})";
 
                                 if (valueNullable && value is not GlobalNetEntityName and not GlobalNetEntityNullableName)
                                 {
@@ -356,7 +356,7 @@ namespace Robust.Shared.CompNetworkGenerator
                                 stateFields.Append($@"
         public {networkedType} {name} = default!;");
 
-                                getField = $"GetNetEntityDictionary(component.{name}, ToPrettyString(uid) + \":{name}\")";
+                                getField = $"GetNetEntityDictionary(component.{name})";
                                 cast = $"(Dictionary<{key}, {value}>)";
 
                                 handleStateSetters.Append($@"
