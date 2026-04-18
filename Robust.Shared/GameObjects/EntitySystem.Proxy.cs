@@ -1663,7 +1663,7 @@ public partial class EntitySystem
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [ProxyFor(typeof(EntityManager))]
-    protected Dictionary<NetEntity, NetEntity> GetNetEntityDictionary(Dictionary<EntityUid, EntityUid> uids) where T : notnull
+    protected Dictionary<NetEntity, NetEntity> GetNetEntityDictionary(Dictionary<EntityUid, EntityUid> uids)
     {
         return EntityManager.GetNetEntityDictionary(uids);
     }
