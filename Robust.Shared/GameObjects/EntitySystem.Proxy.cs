@@ -1291,6 +1291,17 @@ public partial class EntitySystem
         return EntityManager.GetNetEntity(uid, metadata);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected NetEntity GetNetEntity(EntityUid uid, string name, MetaDataComponent? metadata = null)
+    {
+        if (uid.IsValid() && Deleted(uid))
+        {
+            Log.Error($"Tried to network deleted entity {uid} in {name}");
+            return NetEntity.Invalid;
+        }
+        return EntityManager.GetNetEntity(uid, metadata);
+    }
+
     /// <summary>
     ///     Returns the <see cref="NetEntity"/> of an entity.  Logs an error if the entity does not exist.
     /// </summary>
@@ -1298,6 +1309,17 @@ public partial class EntitySystem
     [ProxyFor(typeof(EntityManager))]
     protected NetEntity? GetNetEntity(EntityUid? uid, MetaDataComponent? metadata = null)
     {
+        return EntityManager.GetNetEntity(uid, metadata);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected NetEntity? GetNetEntity(EntityUid? uid, string name, MetaDataComponent? metadata = null)
+    {
+        if (uid != null && uid.Value.IsValid() && Deleted(uid))
+        {
+            Log.Error($"Tried to network deleted entity {uid} in {name}");
+            return null;
+        }
         return EntityManager.GetNetEntity(uid, metadata);
     }
 
@@ -1441,6 +1463,17 @@ public partial class EntitySystem
         return EntityManager.GetNetEntitySet(uids);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected HashSet<NetEntity> GetNetEntitySet(HashSet<EntityUid> uids, string name)
+    {
+        foreach (var uid in uids)
+        {
+            if (uid.IsValid() && Deleted(uid))
+                Log.Error($"Tried to network deleted set entity {uid} in {name}!");
+        }
+        return EntityManager.GetNetEntitySet(uids);
+    }
+
     /// <summary>
     ///     Returns the <see cref="EntityUid"/> versions of the supplied <see cref="NetEntity"/>. Returns <see cref="EntityUid.Invalid"/> if it doesn't exist.
     /// </summary>
@@ -1458,6 +1491,17 @@ public partial class EntitySystem
     [ProxyFor(typeof(EntityManager))]
     protected List<NetEntity> GetNetEntityList(ICollection<EntityUid> uids)
     {
+        return EntityManager.GetNetEntityList(uids);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected List<NetEntity> GetNetEntityList(ICollection<EntityUid> uids, string name)
+    {
+        foreach (var uid in uids)
+        {
+            if (uid.IsValid() && Deleted(uid))
+                Log.Error("Tried to network deleted list entity {uid} in {name}!");
+        }
         return EntityManager.GetNetEntityList(uids);
     }
 
@@ -1571,6 +1615,17 @@ public partial class EntitySystem
         return EntityManager.GetNetEntityDictionary(uids);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected Dictionary<NetEntity, T> GetNetEntityDictionary<T>(Dictionary<EntityUid, T> uids, string name)
+    {
+        foreach (var (uid, t) in uids)
+        {
+            if (uid.IsValid() && Deleted(uid))
+                Log.Error($"Tried to network deleted entity {uid} (for {t}) in {name}!");
+        }
+        return EntityManager.GetNetEntityDictionary(uids);
+    }
+
     /// <summary>
     ///     Returns the <see cref="NetEntity"/> versions of the supplied entities.  Logs an error if the entities do not exist.
     /// </summary>
@@ -1580,6 +1635,18 @@ public partial class EntitySystem
     {
         return EntityManager.GetNetEntityDictionary(uids);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    protected Dictionary<T, NetEntity> GetNetEntityDictionary<T>(Dictionary<T, EntityUid> uids, string name)
+    {
+        foreach (var (t, uid) in uids)
+        {
+            if (uid.IsValid() && Deleted(uid))
+                Log.Error($"Tried to network deleted entity {uid} (for {t}) in {name}!");
+        }
+        return EntityManager.GetNetEntityDictionary(uids);
+    }
+
 
     /// <summary>
     ///     Returns the <see cref="NetEntity"/> versions of the supplied entities.  Logs an error if the entities do not exist.
