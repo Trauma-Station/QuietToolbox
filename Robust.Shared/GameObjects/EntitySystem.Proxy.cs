@@ -1500,7 +1500,7 @@ public partial class EntitySystem
         foreach (var uid in uids)
         {
             if (uid.IsValid() && Deleted(uid))
-                Log.Error("Tried to network deleted list entity {uid} in {name}!");
+                Log.Error($"Tried to network deleted list entity {uid} in {name}!");
         }
         return EntityManager.GetNetEntityList(uids);
     }
