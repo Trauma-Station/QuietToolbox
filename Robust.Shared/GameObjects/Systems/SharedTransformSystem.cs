@@ -271,37 +271,44 @@ namespace Robust.Shared.GameObjects
             EntityUid? oldMap,
             bool checkTraversal = true)
         {
-            var pos = ent.Comp1._parent == EntityUid.Invalid
-                ? default
-                : new EntityCoordinates(ent.Comp1._parent, ent.Comp1._localPosition);
-
-            var oldPos = oldParent == EntityUid.Invalid
-                ? default
-                : new EntityCoordinates(oldParent, oldPosition);
-
-            var ev = new MoveEvent(ent, oldPos, pos, oldRotation, ent.Comp1._localRotation);
-
-            if (oldParent != ent.Comp1._parent)
+            try
             {
-                _physics.OnParentChange(ent, oldParent, oldMap);
-                OnBeforeMoveEvent?.Invoke(ref ev);
-                var entParentChangedMessage = new EntParentChangedMessage(ev.Sender, oldParent, oldMap, ev.Component);
-                RaiseLocalEvent(ev.Sender, ref entParentChangedMessage, true);
+                var pos = ent.Comp1._parent == EntityUid.Invalid
+                    ? default
+                    : new EntityCoordinates(ent.Comp1._parent, ent.Comp1._localPosition);
+
+                var oldPos = oldParent == EntityUid.Invalid
+                    ? default
+                    : new EntityCoordinates(oldParent, oldPosition);
+
+                var ev = new MoveEvent(ent, oldPos, pos, oldRotation, ent.Comp1._localRotation);
+
+                if (oldParent != ent.Comp1._parent)
+                {
+                    _physics.OnParentChange(ent, oldParent, oldMap);
+                    OnBeforeMoveEvent?.Invoke(ref ev);
+                    var entParentChangedMessage = new EntParentChangedMessage(ev.Sender, oldParent, oldMap, ev.Component);
+                    RaiseLocalEvent(ev.Sender, ref entParentChangedMessage, true);
+                }
+                else
+                {
+                    OnBeforeMoveEvent?.Invoke(ref ev);
+                }
+
+                RaiseLocalEvent(ev.Sender, ref ev);
+                OnGlobalMoveEvent?.Invoke(ref ev);
+
+                // Finally, handle grid traversal. This is handled separately to avoid out-of-order move events.
+                // I.e., if the traversal raises its own move event, this ensures that all the old move event handlers
+                // have finished running first. Ideally this shouldn't be required, but this is here just in case
+                if (checkTraversal)
+                {
+                    _traversal.CheckTraverse(ent);
+                }
             }
-            else
+            catch (Exception e)
             {
-                OnBeforeMoveEvent?.Invoke(ref ev);
-            }
-
-            RaiseLocalEvent(ev.Sender, ref ev);
-            OnGlobalMoveEvent?.Invoke(ref ev);
-
-            // Finally, handle grid traversal. This is handled separately to avoid out-of-order move events.
-            // I.e., if the traversal raises its own move event, this ensures that all the old move event handlers
-            // have finished running first. Ideally this shouldn't be required, but this is here just in case
-            if (checkTraversal)
-            {
-                _traversal.CheckTraverse(ent);
+                Log.Error($"Caught exception when raising MoveEvent for {ToPrettyString(ent)}: {e}");
             }
         }
     }
