@@ -184,8 +184,6 @@ namespace Robust.Shared.Prototypes
 
         public bool TryGetComponent<T>(string name, [NotNullWhen(true)] out T? component) where T : IComponent, new()
         {
-            DebugTools.AssertEqual(IoCManager.Resolve<IComponentFactory>().GetComponentName<T>(), name);
-
             if (!Components.TryGetValue(name, out var componentUnCast))
             {
                 component = default;
