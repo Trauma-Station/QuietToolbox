@@ -37,7 +37,7 @@ public sealed class ResPathSerializer : ITypeSerializer<ResPath, ValueDataNode>,
 
         try
         {
-            _resMan ??= dependencies.Resolve<IResourceManager>();
+            dependencies.Resolve(ref _resMan);
             if (node.Value.EndsWith(ResPath.Separator))
             {
                 if (_resMan.ContentGetDirectoryEntries(path).Any())

@@ -20,7 +20,7 @@ public sealed class ObjectSerializer : ITypeSerializer<object, ValueDataNode>, I
     public ValidationNode Validate(ISerializationManager serializationManager, ValueDataNode node,
         IDependencyCollection dependencies, ISerializationContext? context = null)
     {
-        _refMan ??= dependencies.Resolve<IReflectionManager>();
+        dependencies.Resolve(ref _refMan);
 
         if (node.Tag != null)
         {
@@ -44,7 +44,7 @@ public sealed class ObjectSerializer : ITypeSerializer<object, ValueDataNode>, I
         SerializationHookContext hookCtx, ISerializationContext? context = null,
         ISerializationManager.InstantiationDelegate<object>? instanceProvider = null)
     {
-        _refMan ??= dependencies.Resolve<IReflectionManager>();
+        dependencies.Resolve(ref _refMan);
         var value = instanceProvider != null ? instanceProvider() : new object();
 
         if (node.Tag != null)

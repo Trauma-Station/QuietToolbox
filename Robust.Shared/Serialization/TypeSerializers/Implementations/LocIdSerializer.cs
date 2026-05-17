@@ -20,7 +20,7 @@ public sealed class LocIdSerializer : ITypeSerializer<LocId, ValueDataNode>, ITy
 
     public ValidationNode Validate(ISerializationManager serializationManager, ValueDataNode node, IDependencyCollection dependencies, ISerializationContext? context = null)
     {
-        _loc ??= dependencies.Resolve<ILocalizationManager>();
+        dependencies.Resolve(ref _loc);
         if (_loc.HasString(node.Value))
             return new ValidatedValueNode(node);
 

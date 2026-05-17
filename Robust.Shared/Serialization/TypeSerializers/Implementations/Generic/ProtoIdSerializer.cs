@@ -26,7 +26,7 @@ public sealed class ProtoIdSerializer<T> : ITypeSerializer<ProtoId<T>, ValueData
 
     public static ValidationNode Validate(IDependencyCollection deps, ValueDataNode node)
     {
-        _proto ??= deps.Resolve<IPrototypeManager>();
+        dependencies.Resolve(ref _proto);
         if (!_proto.TryGetKindFrom<T>(out var kind))
             return new ErrorNode(node, $"Unknown prototype kind: {typeof(T)}");
 

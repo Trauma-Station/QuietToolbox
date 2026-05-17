@@ -29,7 +29,7 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations
             ISerializationContext? context = null,
             ISerializationManager.InstantiationDelegate<ComponentRegistry>? instanceProvider = null)
         {
-            _factory ??= dependencies.Resolve<IComponentFactory>();
+            dependencies.Resolve(ref _factory);
             var components = instanceProvider != null ? instanceProvider() : new ComponentRegistry();
 
             foreach (var sequenceEntry in node.Sequence)
@@ -96,7 +96,7 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations
             IDependencyCollection dependencies,
             ISerializationContext? context = null)
         {
-            _factory ??= dependencies.Resolve<IComponentFactory>();
+            dependencies.Resolve(ref _factory);
             var components = new ComponentRegistry();
             var list = new List<ValidationNode>();
 
@@ -196,7 +196,7 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations
             SequenceDataNode parent,
             IDependencyCollection dependencies, ISerializationContext? context)
         {
-            _factory ??= dependencies.Resolve<IComponentFactory>();
+            dependencies.Resolve(ref _factory);
             var newCompReg = child.Copy();
             var newCompRegDict = ToTypeIndexedDictionary(newCompReg, _factory);
             var parentDict = ToTypeIndexedDictionary(parent, _factory);

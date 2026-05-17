@@ -104,7 +104,7 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations
             IDependencyCollection dependencies,
             ISerializationContext? context)
         {
-            _proto ??= dependencies.Resolve<Prototypes.IPrototypeManager>();
+            dependencies.Resolve(ref _proto);
             return !_proto.HasIndex<Prototypes.EntityPrototype>(node.Value)
                 ? new ErrorNode(node, $"Invalid {nameof(EntityPrototype)} id")
                 : new ValidatedValueNode(node);

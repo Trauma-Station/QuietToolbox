@@ -16,7 +16,7 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Pro
         public override ValidationNode Validate(ISerializationManager serializationManager, ValueDataNode node,
             IDependencyCollection dependencies, ISerializationContext? context = null)
         {
-            _proto ??= dependencies.Resolve<IPrototypeManager>();
+            dependencies.Resolve(ref _proto);
             return _proto.TryGetKindFrom<TPrototype>(out _) && _proto.HasMapping<TPrototype>(node.Value)
                 ? new ValidatedValueNode(node)
                 : new ErrorNode(node, $"PrototypeID {node.Value} for type {typeof(TPrototype)} not found");

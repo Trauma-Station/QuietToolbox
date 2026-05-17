@@ -24,7 +24,7 @@ public sealed class EntProtoIdSerializer : ITypeSerializer<EntProtoId, ValueData
 
     public ValidationNode Validate(ISerializationManager serialization, ValueDataNode node, IDependencyCollection dependencies, ISerializationContext? context = null)
     {
-        _proto ??= dependencies.Resolve<IPrototypeManager>();
+        dependencies.Resolve(ref _proto);
         if (_proto.TryGetKindFrom<EntityPrototype>(out _) && _proto.HasMapping<EntityPrototype>(node.Value))
             return new ValidatedValueNode(node);
 
@@ -58,14 +58,13 @@ public sealed class EntProtoIdSerializer<T> : ITypeSerializer<EntProtoId<T>, Val
 
     public ValidationNode Validate(ISerializationManager serialization, ValueDataNode node, IDependencyCollection dependencies, ISerializationContext? context = null)
     {
-        _proto ??= dependencies.Resolve<IPrototypeManager>();
+        dependencies.Resolve(ref _proto, ref _factory);
         if (!_proto.TryGetKindFrom<EntityPrototype>(out _) || !_proto.TryGetMapping(typeof(EntityPrototype), node.Value, out var mapping))
             return new ErrorNode(node, $"No {nameof(EntityPrototype)} found with id {node.Value} that has a {typeof(T).Name}");
 
         if (!mapping.TryGet("components", out SequenceDataNode? components))
             return new ErrorNode(node, $"{nameof(EntityPrototype)} {node.Value} doesn't have a {typeof(T).Name}.");
 
-        _factory ??= dependencies.Resolve<IComponentFactory>();
         var registration = _factory.GetRegistration<T>();
         foreach (var componentNode in components)
         {

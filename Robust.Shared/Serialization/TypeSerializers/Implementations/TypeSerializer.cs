@@ -27,7 +27,7 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations
             if (Shortcuts.ContainsKey(node.Value))
                 return new ValidatedValueNode(node);
 
-            _refMan ??= dependencies.Resolve<IReflectionManager>();
+            dependencies.Resolve(ref _refMan);
             return _refMan.GetType(node.Value) == null
                 ? new ErrorNode(node, $"Type '{node.Value}' not found.")
                 : new ValidatedValueNode(node);
@@ -40,7 +40,7 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations
             if (Shortcuts.TryGetValue(node.Value, out var shortcutType))
                 return shortcutType;
 
-            _refMan ??= dependencies.Resolve<IReflectionManager>();
+            dependencies.Resolve(ref _refMan);
             var type = _refMan.GetType(node.Value);
 
             return type == null

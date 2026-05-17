@@ -19,7 +19,7 @@ public sealed class ComponentNameSerializer : ITypeSerializer<string, ValueDataN
     public ValidationNode Validate(ISerializationManager serializationManager, ValueDataNode node,
         IDependencyCollection dependencies, ISerializationContext? context = null)
     {
-        _factory ??= dependencies.Resolve<IComponentFactory>();
+        dependencies.Resolve(ref _factory);
         if (!_factory.TryGetRegistration(node.Value, out _) && _factory.GetComponentAvailability(node.Value) != ComponentAvailability.Ignore)
             return new ErrorNode(node, $"Unknown component kind: {node.Value}");
 
