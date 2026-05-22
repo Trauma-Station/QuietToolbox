@@ -134,7 +134,7 @@ internal sealed partial class HubManager
             }
             catch (Exception e)
             {
-                _sawmill.Log(LogLevel.Error, e, "Exception while trying to advertise server to {HubUrl}",
+                _sawmill.Log(LogLevel.Warning, e, "Exception while trying to advertise server to {HubUrl}",
                     hubUrl);
             }
         }
