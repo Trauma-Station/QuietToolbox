@@ -57,7 +57,7 @@ public sealed partial class NetManager
     {
         if (!channel.IsConnected)
         {
-            _logger.Error(
+            _logger.Warning(
                 $"Tried to send message \"{message}\" to disconnected channel {channel}\n{Environment.StackTrace}");
             return;
         }
