@@ -63,7 +63,7 @@ public partial class SerializationManager
         DataNode child,
         ISerializationContext? context = null)
     {
-        DebugTools.AssertEqual(parent.GetType(), child.GetType());
+        DebugTools.AssertEqual(parent.GetType(), child.GetType(), $"Mismatched parent {parent} vs child {child}");
         var pusher = GetOrCreatePushCompositionDelegate(type, child);
 
         var newNode = pusher(type, parent, child, context);
