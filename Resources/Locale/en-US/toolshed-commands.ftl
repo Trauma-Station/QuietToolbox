@@ -432,5 +432,3 @@ command-description-comp-rm =
 command-description-overlay-toggle = Toggle an overlay on or off
 command-description-overlay-add = Add an overlay (if it does not already exist)
 command-description-overlay-remove = Remove an overlay
-
-command-description-testvoid = Test command
