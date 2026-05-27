@@ -67,8 +67,8 @@ namespace Robust.Shared.Localization
 
             if (!TryGetString(messageId, out var msg))
             {
-                _logSawmill.Warning("Unknown messageId ({culture}): {messageId}", _defaultCulture.Value.Item1.Name,
-                    messageId);
+                _logSawmill.Error("Unknown messageId ({culture}): {messageId}\nStack trace: {trace}", _defaultCulture.Value.Item1.Name,
+                    messageId, Environment.StackTrace);
                 msg = messageId;
             }
 
@@ -85,8 +85,8 @@ namespace Robust.Shared.Localization
             if (TryGetString(messageId, out var argMsg, arg))
                 return argMsg;
 
-            _logSawmill.Warning("Unknown messageId ({culture}): {messageId}", _defaultCulture.Value.Item1.Name,
-                messageId);
+            _logSawmill.Error("Unknown messageId ({culture}): {messageId}\nStack trace: {trace}", _defaultCulture.Value.Item1.Name,
+                messageId, Environment.StackTrace);
             return messageId;
         }
 
@@ -98,8 +98,8 @@ namespace Robust.Shared.Localization
             if (TryGetString(messageId, out var argMsg, arg1, arg2))
                 return argMsg;
 
-            _logSawmill.Warning("Unknown messageId ({culture}): {messageId}", _defaultCulture.Value.Item1.Name,
-                messageId);
+            _logSawmill.Error("Unknown messageId ({culture}): {messageId}\nStack trace: {trace}", _defaultCulture.Value.Item1.Name,
+                messageId, Environment.StackTrace);
             return messageId;
         }
 
@@ -111,8 +111,8 @@ namespace Robust.Shared.Localization
             if (TryGetString(messageId, out var argMsg, args))
                 return argMsg;
 
-            _logSawmill.Warning("Unknown messageId ({culture}): {messageId}", _defaultCulture.Value.Item1.Name,
-                messageId);
+            _logSawmill.Error("Unknown messageId ({culture}): {messageId}\nStack trace: {trace}", _defaultCulture.Value.Item1.Name,
+                messageId, Environment.StackTrace);
             return messageId;
         }
 
