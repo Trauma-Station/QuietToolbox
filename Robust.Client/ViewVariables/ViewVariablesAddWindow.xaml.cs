@@ -26,7 +26,7 @@ namespace Robust.Client.ViewVariables
         {
             RobustXamlLoader.Load(this);
 
-            Title = Loc.GetString(title);
+            Title = title;
 
             EntryItemList.OnItemSelected += _ => RefreshAddButton();
             EntryItemList.OnItemDeselected += _ => RefreshAddButton();
