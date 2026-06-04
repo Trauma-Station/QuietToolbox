@@ -110,8 +110,6 @@ internal sealed partial class MetricsManager
                         }
                         catch (Exception e)
                         {
-                            _sawmill.Log(LogLevel.Error, e, "Exception in metrics listener");
-
                             resp.StatusCode = 500;
                         }
                         finally
