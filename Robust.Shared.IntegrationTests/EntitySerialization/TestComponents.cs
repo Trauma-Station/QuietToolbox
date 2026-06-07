@@ -49,7 +49,7 @@ internal sealed partial class EntitySaveTestComponent : Component
 internal sealed partial class TileDef : ITileDefinition
 {
     public ushort TileId { get; set; }
-    public string Name => ID;
+    public LocId Name => ID; // this fails the test. (not really)
 
     [IdDataField]
     public string ID { get; private set; } = default!;

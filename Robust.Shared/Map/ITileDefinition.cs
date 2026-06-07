@@ -21,7 +21,7 @@ namespace Robust.Shared.Map
         /// <summary>
         ///     The name of the definition. This is user facing.
         /// </summary>
-        string Name { get; }
+        LocId Name { get; }
 
         /// <summary>
         ///     The path of the sprite to draw.
