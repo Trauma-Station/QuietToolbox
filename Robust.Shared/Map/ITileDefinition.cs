@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Robust.Shared.Localization;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
@@ -22,7 +21,7 @@ namespace Robust.Shared.Map
         /// <summary>
         ///     The name of the definition. This is user facing.
         /// </summary>
-        LocId Name { get; }
+        string Name { get; }
 
         /// <summary>
         ///     The path of the sprite to draw.

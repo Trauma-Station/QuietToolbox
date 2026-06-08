@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using Robust.Shared.GameObjects;
-using Robust.Shared.Localization;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
 using Robust.Shared.Prototypes;
@@ -50,7 +49,7 @@ internal sealed partial class EntitySaveTestComponent : Component
 internal sealed partial class TileDef : ITileDefinition
 {
     public ushort TileId { get; set; }
-    public LocId Name => ID; // this fails the test. (not really)
+    public string Name => ID;
 
     [IdDataField]
     public string ID { get; private set; } = default!;
