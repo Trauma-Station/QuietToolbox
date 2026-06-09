@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -51,6 +52,10 @@ public sealed partial class MapLoaderSystem : EntitySystem
 
     private StreamWriter GetWriterForPath(ResPath path)
     {
+        // this exists for anamzing reason
+        if (path.Extension != "yml")
+            throw new Exception("Map paths must be YML files...");
+
         Log.Info($"Saving serialized results to {path}");
         path = path.ToRootedPath();
         _resourceManager.UserData.CreateDir(path.Directory);
