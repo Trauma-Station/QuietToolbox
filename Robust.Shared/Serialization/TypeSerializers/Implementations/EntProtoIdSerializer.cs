@@ -19,7 +19,6 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations;
 [TypeSerializer]
 public sealed class EntProtoIdSerializer : ITypeSerializer<EntProtoId, ValueDataNode>, ITypeCopyCreator<EntProtoId>
 {
-    private IComponentFactory? _factory;
     private IPrototypeManager? _proto;
 
     public ValidationNode Validate(ISerializationManager serialization, ValueDataNode node, IDependencyCollection dependencies, ISerializationContext? context = null)
