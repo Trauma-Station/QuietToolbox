@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
 using Robust.Shared.Log;
+using Robust.Shared.Network;
 using Robust.Shared.Serialization.Manager.Attributes;
 using Robust.Shared.Serialization.Manager.Exceptions;
 using Robust.Shared.Serialization.Markdown.Mapping;
@@ -242,6 +243,8 @@ namespace Robust.Shared.Serialization.Manager.Definition
         {
             var validatedMapping = new Dictionary<ValidationNode, ValidationNode>();
 
+            var isServer = serialization.IsServer;
+
             var includeValidations = new List<ValidatedMappingNode>();
 
             for (var i = 0; i < BaseFieldDefinitions.Length; i++)
@@ -296,6 +299,21 @@ namespace Robust.Shared.Serialization.Manager.Definition
                     }
 
                     valNode = new ValidatedValueNode(val);
+                }
+                else if (BaseFieldDefinitions[idx].Attribute.ServerOnly)
+                {
+                    if (!isServer)
+                    {
+                        valNode = new InconclusiveNode(val);
+                    }
+                    else
+                    {
+                        valNode = FieldValidators[idx](val, context);
+                        foreach (var error in valNode.GetErrors())
+                        {
+                            error.AlwaysRelevant = true;
+                        }
+                    }
                 }
                 else
                 {

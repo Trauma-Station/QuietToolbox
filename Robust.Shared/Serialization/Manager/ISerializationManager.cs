@@ -26,6 +26,11 @@ namespace Robust.Shared.Serialization.Manager
 
         IReflectionManager ReflectionManager { get; }
 
+        /// <summary>
+        /// Shortcut for <c>INetManager.IsServer</c> value for validation nodes to use.
+        /// </summary>
+        bool IsServer { get; }
+
         #region Validation
 
         /// <summary>
