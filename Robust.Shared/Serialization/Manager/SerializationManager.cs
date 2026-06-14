@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Robust.Shared.IoC;
 using Robust.Shared.Log;
+using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Reflection;
 using Robust.Shared.Serialization.Manager.Attributes;
@@ -19,6 +20,7 @@ namespace Robust.Shared.Serialization.Manager
 {
     public sealed partial class SerializationManager : ISerializationManager
     {
+        [Dependency] private INetManager _net = default!;
         [Dependency] private IReflectionManager _reflectionManager = default!;
 
         public IReflectionManager ReflectionManager => _reflectionManager;
@@ -37,6 +39,8 @@ namespace Robust.Shared.Serialization.Manager
         private IDependencyCollection _dependencyCollection = null!;
 
         public IDependencyCollection DependencyCollection => _dependencyCollection;
+
+        public bool IsServer => _net.IsServer;
 
         public void Initialize()
         {

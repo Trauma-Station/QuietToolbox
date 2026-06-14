@@ -17,7 +17,7 @@ namespace Robust.Shared.Serialization.Markdown.Validation
 
         public string ErrorReason { get; }
 
-        public bool AlwaysRelevant { get; }
+        public bool AlwaysRelevant;
 
         public override bool Valid => false;
 
