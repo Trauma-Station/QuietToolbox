@@ -134,6 +134,7 @@ namespace Robust.Server.ServerStatus
 
             return new JsonObject
             {
+                ["engine"] = "QuietToolbox", // if you want to change this you have custom Robust.Client anyway, so hardcoding is fine
                 ["engine_version"] = buildInfo.EngineVersion,
                 ["fork_id"] = buildInfo.ForkId,
                 ["version"] = buildInfo.Version,
@@ -160,6 +161,7 @@ namespace Robust.Server.ServerStatus
             }
             return new JsonObject
             {
+                ["engine"] = "QuietToolbox",
                 ["engine_version"] = _cfg.GetCVar(CVars.BuildEngineVersion),
                 ["fork_id"] = fork,
                 ["version"] = acm.ManifestHash,
