@@ -268,7 +268,14 @@ internal partial class UserInterfaceManager
     {
         foreach (var controller in _uiControllers.Values)
         {
-            controller.Initialize();
+            try
+            {
+                controller.Initialize();
+            }
+            catch (Exception e)
+            {
+                _sawmillUI.Error($"Caught exception while initializing {controller}: {e}");
+            }
         }
     }
 

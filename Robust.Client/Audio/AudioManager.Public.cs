@@ -103,6 +103,9 @@ internal partial class AudioManager
         var vorbis = AudioLoaderOgg.LoadAudioData(stream);
 
         var buffer = AL.GenBuffer();
+        _checkAlError();
+        if (buffer == 0)
+            throw new InvalidOperationException($"Failed to generate an OpenAL buffer for a sound {name}, see logs!");
 
         ALFormat format;
         // NVorbis only supports loading into floats.
