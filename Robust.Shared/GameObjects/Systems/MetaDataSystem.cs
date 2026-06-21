@@ -79,6 +79,7 @@ public abstract partial class MetaDataSystem : EntitySystem
         DebugTools.Assert(value?.ID == metadata._entityPrototype?.ID);
 
         metadata._entityPrototype = value;
+        Dirty(uid, metadata, metadata);
     }
 
     public bool EntityPaused(EntityUid uid, MetaDataComponent? metadata = null)

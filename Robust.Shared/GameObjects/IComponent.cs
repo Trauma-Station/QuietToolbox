@@ -69,12 +69,6 @@ namespace Robust.Shared.GameObjects
         bool Deleted { get; }
 
         /// <summary>
-        ///     Marks the component as dirty so that the network will re-sync it with clients.
-        /// </summary>
-        [Obsolete]
-        void Dirty(IEntityManager? entManager = null);
-
-        /// <summary>
         ///     This is the tick the component was created.
         /// </summary>
         GameTick CreationTick { get; internal set; }

@@ -13,6 +13,7 @@ internal sealed partial class PrototypeReloadSystem : EntitySystem
 {
     [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private IComponentFactory _componentFactory = default!;
+    [Dependency] private MetaDataSystem _meta = default!;
 
     public override void Initialize()
     {
@@ -78,6 +79,6 @@ internal sealed partial class PrototypeReloadSystem : EntitySystem
         }
 
         // Update entity metadata
-        metaData.EntityPrototype = newPrototype;
+        _meta.SetEntityPrototype(entity, newPrototype, metaData);
     }
 }

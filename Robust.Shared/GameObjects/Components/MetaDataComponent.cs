@@ -132,16 +132,7 @@ namespace Robust.Shared.GameObjects
         ///     The prototype this entity was created from, if any.
         /// </summary>
         [ViewVariables]
-        public EntityPrototype? EntityPrototype
-        {
-            get => _entityPrototype;
-            [Obsolete("Use MetaDataSystem.SetEntityPrototype")]
-            set
-            {
-                _entityPrototype = value;
-                Dirty();
-            }
-        }
+        public EntityPrototype? EntityPrototype => _entityPrototype;
 
         /// <summary>
         ///     The current lifetime stage of this entity. You can use this to check
