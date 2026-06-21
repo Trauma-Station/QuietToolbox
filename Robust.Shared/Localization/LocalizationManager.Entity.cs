@@ -32,7 +32,7 @@ namespace Robust.Shared.Localization
                 return true;
             }
 
-            if (_entMan.GetComponent<MetaDataComponent>(entity).EntityPrototype is not {} prototype)
+            if (_entMan.GetComponentOrNull<MetaDataComponent>(entity)?.EntityPrototype is not {} prototype)
             {
                 value = null;
                 return false;
