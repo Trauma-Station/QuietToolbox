@@ -387,7 +387,7 @@ namespace Robust.Shared.Serialization.Manager
                             Expression.Assign(returnValue, GetNullExpression(managerConst, actualType)))
                         : actualType == typeof(EntityUid) //todo paul make this not hardcoded
                             ? Expression.Assign(returnValue, Expression.Constant(EntityUid.Invalid))
-                            : ExpressionUtils.ThrowExpression<NullNotAllowedException>(),
+                            : ExpressionUtils.ThrowExpression<NullNotAllowedException>(actualType.FullName),
                 Expression.Block(typeof(void),
                     Expression.Assign(returnValue, call))),
                 returnValue);

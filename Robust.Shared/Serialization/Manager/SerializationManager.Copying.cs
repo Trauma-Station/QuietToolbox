@@ -372,7 +372,7 @@ public sealed partial class SerializationManager
 
     private void NotNullOverrideCheck(bool notNullableOverride, Type? type = null)
     {
-        if (notNullableOverride || (type != null && !type.IsNullable())) throw new NullNotAllowedException();
+        if (notNullableOverride || (type != null && !type.IsNullable())) throw new NullNotAllowedException(type?.FullName ?? "<null>");
     }
 
     private void NotNullOverrideCheck<T>(bool notNullableOverride) =>
