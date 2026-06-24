@@ -302,7 +302,7 @@ public sealed partial class SerializationManager
     {
         if (!type.IsNullable() || notNullableOverride)
         {
-            throw new NullNotAllowedException(type.FullName);
+            throw new NullNotAllowedException(type.ToString());
         }
     }
 }
