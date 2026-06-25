@@ -7,6 +7,7 @@ using System.Linq;
 using System.Numerics;
 using System.Reflection;
 using Robust.Shared.Log;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Maths;
 using Robust.Shared.Reflection;
 using Robust.Shared.Utility;
@@ -15,6 +16,7 @@ namespace Robust.Shared.Serialization
 {
     internal abstract partial class RobustSerializer : IRobustSerializerInternal
     {
+        [Dependency] private IEntityManager _ent = default!;
         [Dependency] private IReflectionManager _reflectionManager = default!;
         [Dependency] protected IRobustMappedStringSerializer MappedStringSerializer = default!;
         [Dependency] private ILogManager _logManager = default!;
@@ -112,6 +114,7 @@ namespace Robust.Shared.Serialization
                     new NetBitArraySerializer(),
                     new NetFormattedStringSerializer(),
                     new NetUnsafeFloatSerializer(),
+                    new NetEntityUidSerializer(_ent),
                 }
             };
 
