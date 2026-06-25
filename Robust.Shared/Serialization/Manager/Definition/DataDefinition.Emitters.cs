@@ -107,7 +107,7 @@ namespace Robust.Shared.Serialization.Manager.Definition
                             ? Expression.Block(typeof(void),
                                 Expression.Assign(valueVariable,
                                     SerializationManager.GetNullExpression(managerConst, fieldType)))
-                            : ExpressionUtils.ThrowExpression<NullNotAllowedException>(),
+                            : ExpressionUtils.ThrowExpression<NullNotAllowedException>($"{fieldDefinition.FieldInfo.Name} {fieldType.FullName}"),
                         call);
                 }
                 else
@@ -230,7 +230,7 @@ namespace Robust.Shared.Serialization.Manager.Definition
                                     Expression.Assign(nodeVar, SerializationManager.WrapNullableIfNeededExpression(call, true))),
                                 isNullable
                                     ? Expression.Assign(nodeVar, Expression.Constant(ValueDataNode.Null()))
-                                    : ExpressionUtils.ThrowExpression<NullNotAllowedException>()),
+                                    : ExpressionUtils.ThrowExpression<NullNotAllowedException>($"{fieldDefinition.FieldInfo.Name} {fieldType.FullName}")),
                             nodeVar);
                     }
                 }

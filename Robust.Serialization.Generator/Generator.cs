@@ -431,7 +431,7 @@ if (serialization.TryCustomCopy(this, ref target, hookCtx, {definition.HasHooks.
                     builder.AppendLine($$"""
                                          if ({{name}} == null)
                                          {
-                                             throw new NullNotAllowedException();
+                                             throw new NullNotAllowedException(nameof({{name}}));
                                          }
                                          """);
                 }
@@ -505,7 +505,7 @@ if (serialization.TryCustomCopy(this, ref target, hookCtx, {definition.HasHooks.
                     builder.AppendLine($$"""
                                          if ({{name}} == null)
                                          {
-                                             throw new NullNotAllowedException();
+                                             throw new NullNotAllowedException(nameof({{name}}));
                                          }
                                          """);
                 }

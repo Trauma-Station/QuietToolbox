@@ -2,7 +2,9 @@
 
 namespace Robust.Shared.Serialization.Manager.Exceptions;
 
-public sealed class NullNotAllowedException : Exception
+public sealed class NullNotAllowedException(string name) : Exception
 {
-    public override string Message => "Null value provided for reading but type was not nullable!";
+    public readonly string Name = name;
+
+    public override string Message => $"Null value provided for reading '{name}' but type was not nullable";
 }

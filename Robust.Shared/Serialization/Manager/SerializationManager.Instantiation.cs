@@ -104,20 +104,27 @@ public partial class SerializationManager
 
             var generator = method.GetILGenerator();
 
-            if (type.IsValueType)
+            try
             {
-                CreateValueTypeInstantiator(generator, type);
-            }
-            else if (isRecord)
-            {
-                CreateRecordInstantiator(generator, type);
-            }
-            else
-            {
-                CreateClassInstantiator(generator, type);
-            }
+                if (type.IsValueType)
+                {
+                    CreateValueTypeInstantiator(generator, type);
+                }
+                else if (isRecord)
+                {
+                    CreateRecordInstantiator(generator, type);
+                }
+                else
+                {
+                    CreateClassInstantiator(generator, type);
+                }
 
-            return method.CreateDelegate(typeof(ISerializationManager.InstantiationDelegate<>).MakeGenericType(type));
+                return method.CreateDelegate(typeof(ISerializationManager.InstantiationDelegate<>).MakeGenericType(type));
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Failed to create generic type for {type}", e);
+            }
         }, isDataRecord);
     }
 
