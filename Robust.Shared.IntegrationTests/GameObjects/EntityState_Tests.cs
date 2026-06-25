@@ -38,6 +38,7 @@ namespace Robust.UnitTesting.Shared.GameObjects
         public void ComponentChangedSerialized()
         {
             var container = new DependencyCollection();
+            container.Register<IEntityManager, EntityManager>();
             container.Register<ILogManager, LogManager>();
             container.Register<IConfigurationManager, ServerNetConfigurationManager>();
             container.Register<IConfigurationManagerInternal, ServerNetConfigurationManager>();
