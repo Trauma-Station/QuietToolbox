@@ -274,11 +274,14 @@ namespace Robust.Shared.Player
         /// <summary>
         ///     Adds all players attached to the given entities to this filter, then returns it.
         /// </summary>
+        public Filter FromEntities(params EntityUid[] entities, SharedFilterSystem system)
+            => system.FromEntities(this, entities);
+
+        [Obsolete("Pass SharedFilterSystem")]
         public Filter FromEntities(params EntityUid[] entities)
         {
-            return EntitySystem.TryGet(out SharedFilterSystem? filterSystem)
-                ? filterSystem.FromEntities(this, entities)
-                : this;
+            var entMan = IoCManager.Resolve<IEntityManager>();
+            return FromEntities(entities, entMan.System<SharedFilterSystem>());
         }
 
         /// <summary>
