@@ -4,6 +4,7 @@ using Moq;
 using NUnit.Framework;
 using Robust.Server;
 using Robust.Server.Configuration;
+using Robust.Server.GameObjects;
 using Robust.Server.Network.Transfer;
 using Robust.Server.Player;
 using Robust.Server.Reflection;
