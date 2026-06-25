@@ -19,7 +19,7 @@ internal sealed class NetEntityUidSerializer : IStaticTypeSerializer
     // yes this is static cry about it
     // there will only ever 1 be 1 instance across any threads it doesnt matter
     // if you want multiple for some fucked up reason, refactor NetSerializer rw methods to not be static.
-    private static IEntityManager _ent;
+    private static IEntityManager _ent = default!;
 
     internal NetEntityUidSerializer(IEntityManager ent)
     {
