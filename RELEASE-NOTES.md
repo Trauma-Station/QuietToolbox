@@ -39,13 +39,11 @@ END TEMPLATE-->
 
 ### New features
 
-* Add a `OnlyRotation` property to MoveEvent where the EntityCoordinates remain the same.
-* ValueList now implements IList and not just IEnumerable.
+*None yet*
 
 ### Bugfixes
 
-* Fix ValueList TryPop not clearing element references.
-* Fix ValueList Peek always throwing by referencing the wrong index.
+*None yet*
 
 ### Other
 
