@@ -211,6 +211,9 @@ namespace Robust.Shared.Network
         [ViewVariables]
         public IEnumerable<INetChannel> Channels => _channels.Values;
 
+        internal IEnumerable<List<NetConnection>> AllConnections
+            => _netPeers.Select(data => data.Peer.Connections);
+
         /// <inheritdoc />
         public int ChannelCount => _channels.Count;
 
@@ -770,6 +773,9 @@ namespace Robust.Shared.Network
 
             throw new NetManagerException("There is no NetChannel for this NetConnection.");
         }
+
+        internal bool HasChannel(NetConnection connection)
+            => _channels.ContainsKey(connection);
 
         private bool TryGetChannel(NetConnection connection, [NotNullWhen(true)] out INetChannel? channel)
         {

@@ -11,6 +11,7 @@ namespace Robust.Server.Console.Commands
     public sealed partial class ListPlayers : LocalizedCommands
     {
         [Dependency] private IPlayerManager _players = default!;
+        [Dependency] private INetManager _net = default!;
 
         public override string Command => "listplayers";
         public override void Execute(IConsoleShell shell, string argStr, string[] args)
@@ -33,6 +34,19 @@ namespace Robust.Server.Console.Commands
                     DateTime.UtcNow - p.ConnectedTime,
                     p.Channel.Ping + "ms",
                     p.Name));
+            }
+            // unauthenticated dummy connections are usually malicious
+            var net = (NetManager) _net;
+            foreach (var list in net.AllConnections)
+            {
+                foreach (var conn in list)
+                {
+                    if (net.HasChannel(conn))
+                        continue; // halal
+
+                    // haram
+                    sb.AppendLine($"SUSPICIOUS!!! {conn}");
+                }
             }
 
             shell.WriteLine(sb.ToString());
