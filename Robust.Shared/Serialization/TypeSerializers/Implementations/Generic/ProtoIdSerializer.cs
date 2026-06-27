@@ -17,6 +17,7 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations.Generic;
 [TypeSerializer]
 public sealed class ProtoIdSerializer<T> : ITypeSerializer<ProtoId<T>, ValueDataNode>, ITypeCopyCreator<ProtoId<T>> where T : class, IPrototype
 {
+    // TODO: use Dependency when this is made non-static
     private static IPrototypeManager? _proto;
 
     public ValidationNode Validate(ISerializationManager serialization, ValueDataNode node, IDependencyCollection dependencies, ISerializationContext? context = null)
@@ -24,6 +25,7 @@ public sealed class ProtoIdSerializer<T> : ITypeSerializer<ProtoId<T>, ValueData
         return Validate(dependencies, node);
     }
 
+    // TODO: kill all PrototypeIdSerializers then make this a regular method
     public static ValidationNode Validate(IDependencyCollection deps, ValueDataNode node)
     {
         _proto ??= deps.Resolve<IPrototypeManager>();
