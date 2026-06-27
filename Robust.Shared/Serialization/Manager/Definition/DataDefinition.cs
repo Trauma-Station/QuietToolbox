@@ -109,7 +109,7 @@ namespace Robust.Shared.Serialization.Manager.Definition
                     foreach (var @interface in serializer.GetInterfaces())
                     {
                         if (!@interface.IsGenericType)
-                            throw new InvalidOperationException($"Tried to use a custom type serializer {serializer} with non-generic interface {@interface}!");
+                            throw new InvalidOperationException($"Tried to use a custom type serializer {serializer} with non-generic interface {@interface} for {GetType()}!");
 
                         var genericTypedef = @interface.GetGenericTypeDefinition();
                         if (genericTypedef == typeof(ITypeWriter<>))
