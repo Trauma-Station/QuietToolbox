@@ -35,12 +35,11 @@ END TEMPLATE-->
 
 ### Breaking changes
 
-* The obsoleted TryIndex methods on PrototypeManager have now been removed.
+* Validate Box2i inputs to ensure no negative-sized boxes.
 
 ### New features
 
-* Add batched Box2 / Box2Rotated drawing methods to Clyde WorldHandle.
-* Completion filter now works by Contains instead of StartsWith
+*None yet*
 
 ### Bugfixes
 
