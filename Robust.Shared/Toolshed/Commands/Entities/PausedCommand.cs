@@ -13,6 +13,6 @@ internal sealed class PausedCommand : ToolshedCommand
             [CommandInverted] bool inverted
         )
     {
-        return entities.Where(x => Comp<MetaDataComponent>(x).EntityPaused ^ inverted);
+        return entities.Where(x => TryComp<MetaDataComponent>(x, out var meta) && (meta.EntityPaused ^ inverted));
     }
 }
