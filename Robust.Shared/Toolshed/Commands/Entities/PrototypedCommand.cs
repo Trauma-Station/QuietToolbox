@@ -14,5 +14,5 @@ internal sealed class PrototypedCommand : ToolshedCommand
             EntProtoId prototype,
             [CommandInverted] bool inverted
         )
-        => input.Where(x => TryComp<MetaDataComponent>(x, out var meta) && (meta.Prototype?.ID == prototype.Id ^ inverted));
+        => input.Where(x => TryComp<MetaDataComponent>(x, out var meta) && (meta.EntityPrototype?.ID == prototype.Id ^ inverted));
 }
