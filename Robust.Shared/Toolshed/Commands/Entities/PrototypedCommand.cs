@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
@@ -14,6 +14,5 @@ internal sealed class PrototypedCommand : ToolshedCommand
             EntProtoId prototype,
             [CommandInverted] bool inverted
         )
-        => input.Where(x => MetaData(x).EntityPrototype?.ID == prototype.Id ^ inverted);
-
+        => input.Where(x => TryComp<MetaDataComponent>(x, out var meta) && (meta.EntityPrototype?.ID == prototype.Id ^ inverted));
 }
