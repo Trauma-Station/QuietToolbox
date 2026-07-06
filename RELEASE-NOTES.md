@@ -49,7 +49,7 @@ END TEMPLATE-->
 
 ### Other
 
-*None yet*
+* `EyeComponent.DrawLight` is now serialized.
 
 ### Internal
 
