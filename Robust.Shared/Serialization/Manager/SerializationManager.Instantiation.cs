@@ -156,6 +156,16 @@ public partial class SerializationManager
 
         return (ISerializationManager.InstantiationDelegate<T>)_instantiators.GetOrAdd(type, static (type, isRecord) =>
         {
+            var generated = typeof(ISerializationGenerated<>).MakeGenericType(type);
+            if (type.IsAssignableTo(generated))
+            {
+                var instantiate = type
+                    .GetMethod(nameof(ISerializationGenerated<>.StaticInstantiate), BindingFlags.Public | BindingFlags.Static)!
+                    .CreateDelegate(typeof(ISerializationManager.InstantiationDelegate<>).MakeGenericType(type));
+
+                return instantiate;
+            }
+
             var method = new DynamicMethod(
                 "Instantiator",
                 type,
@@ -186,16 +196,5 @@ public partial class SerializationManager
                 throw new Exception($"Failed to create generic type for {type}", e);
             }
         }, isDataRecord);
-    }
-
-    //we can safely set isDataRecord to false here due to a delegate already existing if it if it were
-    private T InstantiateValue<T>() => GetOrCreateInstantiator<T>(false)();
-
-    internal MethodCallExpression InstantiationExpression(ConstantExpression managerConst, Type type)
-    {
-        return Expression.Call(
-            managerConst,
-            nameof(InstantiateValue),
-            new[] { type });
     }
 }
