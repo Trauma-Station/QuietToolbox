@@ -547,7 +547,7 @@ public abstract partial class SharedTransformSystem
         if (rotation != null && !xform.NoLocalRotation)
             xform._localRotation = NormalizeRotation(rotation.Value);
 
-        DebugTools.Assert(!xform.NoLocalRotation || xform.LocalRotation == 0);
+        DebugTools.Assert(!xform.NoLocalRotation || xform.LocalRotation == 0, $"NoRot entity has a non-zero local rotation. entity: {ToPrettyString(uid)}");
 
         // Perform parent change logic
         if (value.EntityId != xform._parent)
