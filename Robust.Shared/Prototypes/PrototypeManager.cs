@@ -737,7 +737,7 @@ namespace Robust.Shared.Prototypes
                 throw new UnknownPrototypeException(id, typeof(T));
             }
 
-            return index.Instances.ContainsKey(id);
+            return !string.IsNullOrEmpty(id) && index.Instances.ContainsKey(id);
         }
 
         /// <inheritdoc />
