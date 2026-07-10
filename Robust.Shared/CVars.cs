@@ -62,6 +62,12 @@ namespace Robust.Shared
             CVarDef.Create("net.max_rapid_connections", 3, CVar.ARCHIVE);
 
         /// <summary>
+        /// Whether Lidgren should send disconnection reasons when rejecting connections due to internal limits.
+        /// </summary>
+        public static readonly CVarDef<bool> NetSendConnectionRejectionReasons =
+            CVarDef.Create("net.send_connection_rejection_reasons", true, CVar.ARCHIVE);
+
+        /// <summary>
         /// How many seconds until connection count decays for <c>net.max_rapid_connections</c>.
         /// </summary>
         public static readonly CVarDef<double> NetRapidConnectionWindow =
@@ -145,6 +151,18 @@ namespace Robust.Shared
         /// <seealso cref="NetMtuExpand"/>
         public static readonly CVarDef<int> NetMtuExpandFailAttempts =
             CVarDef.Create("net.mtu_expand_fail_attempts", 5, CVar.ARCHIVE);
+
+        /// <summary>
+        /// Maximum bytes used by incomplete Lidgren fragment groups for one connection.
+        /// </summary>
+        public static readonly CVarDef<int> NetMaxFragmentReassemblyBytesPerConnection =
+            CVarDef.Create("net.max_fragment_reassembly_bytes_per_connection", 32 * 1024 * 1024, CVar.ARCHIVE);
+
+        /// <summary>
+        /// How many seconds Lidgren keeps an incomplete fragment group alive.
+        /// </summary>
+        public static readonly CVarDef<float> NetFragmentGroupTimeout =
+            CVarDef.Create("net.fragment_group_timeout", 30.0f, CVar.ARCHIVE);
 
         /// <summary>
         /// Whether to enable verbose debug logging in Lidgren.
@@ -414,6 +432,31 @@ namespace Robust.Shared
         /// </summary>
         public static readonly CVarDef<bool> NetLidgrenLogError =
             CVarDef.Create("net.lidgren_log_error", true);
+
+        /// <summary>
+        /// Controls whether repeated malformed network input logs from Lidgren are rate limited.
+        /// </summary>
+        public static readonly CVarDef<bool> NetLidgrenLogRateLimit =
+            CVarDef.Create("net.lidgren_log_rate_limit", true);
+
+        /// <summary>
+        /// Bitmask of malformed network input log categories that Lidgren should rate limit.
+        /// </summary>
+        /// <seealso cref="NetLogRateLimitTarget"/>
+        public static readonly CVarDef<int> NetLidgrenLogRateLimitTargets =
+            CVarDef.Create("net.lidgren_log_rate_limit_targets", (int) NetLogRateLimitTarget.All);
+
+        /// <summary>
+        /// How many matching Lidgren logs are emitted per endpoint and category before suppression starts.
+        /// </summary>
+        public static readonly CVarDef<int> NetLidgrenLogRateLimitBurst =
+            CVarDef.Create("net.lidgren_log_rate_limit_burst", 5);
+
+        /// <summary>
+        /// Window in seconds used by Lidgren's malformed network input log rate limiter.
+        /// </summary>
+        public static readonly CVarDef<float> NetLidgrenLogRateLimitWindow =
+            CVarDef.Create("net.lidgren_log_rate_limit_window", 10.0f);
 
         /// <summary>
         /// If true, run network message encryption on another thread.
@@ -1782,6 +1825,16 @@ namespace Robust.Shared
         /// Enabled the profiling system.
         /// </summary>
         public static readonly CVarDef<bool> ProfEnabled = CVarDef.Create("prof.enabled", false);
+
+        /// <summary>
+        /// Enables the Tracy profiling system. Tracing will stay enabled for the entire runtime of the program even if
+        /// you turn this cvar off.
+        /// </summary>
+        /// <remarks>
+        /// By default, this will listen for Tracy connections on all interfaces! Set the <c>TRACY_ONLY_LOCALHOST</c>
+        /// env var to 1 if you want to restrict to localhost.
+        /// </remarks>
+        public static readonly CVarDef<bool> TracyProfEnabled = CVarDef.Create("prof.tracy.enabled", false);
 
         /// <summary>
         /// Event log buffer size for the profiling system.
