@@ -63,10 +63,6 @@ namespace Robust.Shared.Console
         /// <inheritdoc />
         public void Clear()
         {
-            // Only the local shell can clear the console
-            if (Player is not null)
-                return;
-
             ConsoleHost.ClearLocalConsole();
         }
     }
