@@ -125,9 +125,12 @@ namespace Robust.Shared.Physics.Systems
 
             foreach (var proxy in _gridMoveBuffer)
             {
+                if (!_xformQuery.TryComp(proxy.Entity, out var proxyXform))
+                    continue;
+
                 moveBuffer.Add(proxy);
                 // If something is in our AABB then try grid traversal for it
-                _traversal.CheckTraverse((proxy.Entity, _xformQuery.GetComponent(proxy.Entity)));
+                _traversal.CheckTraverse((proxy.Entity, proxyXform));
             }
         }
 
@@ -612,10 +615,13 @@ namespace Robust.Shared.Physics.Systems
             public void Execute(int index)
             {
                 var proxy = MoveBuffer[index];
-                var broadphaseUid = XformQuery.GetComponent(proxy.Entity).Broadphase?.Uid;
+                if (!XformQuery.TryComp(proxy.Entity, out var proxyXform))
+                    return; // TODO: clean up bad proxies...
+
+                var broadphaseUid = proxyXform.Broadphase?.Uid;
                 var worldAABB = TransformSys.GetWorldMatrix(broadphaseUid!.Value).TransformBox(proxy.AABB);
 
-                var mapUid = XformQuery.GetComponent(proxy.Entity).MapUid ?? EntityUid.Invalid;
+                var mapUid = proxyXform.MapUid ?? EntityUid.Invalid;
 
                 var broadphaseExpand = System.GetBroadphaseExpand(proxy.Body, FrameTime);
 

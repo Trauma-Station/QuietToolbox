@@ -47,6 +47,9 @@ public abstract partial class SharedTransformSystem
     /// </summary>
     public MapCoordinates ToMapCoordinates(EntityCoordinates coordinates, bool logError = true)
     {
+        if (coordinates.EntityId == EntityUid.Invalid)
+            return MapCoordinates.Nullspace; // nullspace is infact nullspace
+
         if (!TryComp(coordinates.EntityId, out TransformComponent? xform))
         {
             if (logError)

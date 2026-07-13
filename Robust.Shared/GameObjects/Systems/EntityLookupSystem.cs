@@ -725,14 +725,21 @@ public sealed partial class EntityLookupSystem : EntitySystem
             broadUid = old.Uid;
         }
 
-        if (old.CanCollide)
+        try
         {
-            RemoveBroadTree(broadphase, _fixturesQuery.GetComponent(uid), old.Static);
+            if (old.CanCollide)
+            {
+                RemoveBroadTree(broadphase, _fixturesQuery.GetComponent(uid), old.Static);
+            }
+            else if (old.Static)
+                broadphase.StaticSundriesTree.Remove(uid);
+            else
+                broadphase.SundriesTree.Remove(uid);
         }
-        else if (old.Static)
-            broadphase.StaticSundriesTree.Remove(uid);
-        else
-            broadphase.SundriesTree.Remove(uid);
+        catch (Exception e)
+        {
+            Log.Error($"Caught error while removing {ToPrettyString(uid)} from physics trees: {e}");
+        }
 
         xform.Broadphase = null;
         if (!recursive)
