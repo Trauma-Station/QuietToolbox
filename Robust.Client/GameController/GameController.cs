@@ -362,12 +362,13 @@ namespace Robust.Client
         internal bool StartupSystemSplash(
             GameControllerOptions options,
             Func<ILogHandler>? logHandlerFactory,
+            int logLimit = int.MaxValue,
             bool globalExceptionLog = false)
         {
             Options = options;
             ReadInitialLaunchState();
 
-            SetupLogging(_logManager, logHandlerFactory ?? (() => new ConsoleLogHandler()), globalExceptionLog);
+            SetupLogging(_logManager, logHandlerFactory ?? (() => new ConsoleLogHandler(logLimit)), globalExceptionLog);
 
             if (_commandLineArgs != null)
             {

@@ -943,6 +943,14 @@ namespace Robust.Shared
         public static readonly CVarDef<bool> LogRuntimeLog =
             CVarDef.Create("log.runtimelog", true, CVar.ARCHIVE | CVar.SERVERONLY);
 
+        /// <summary>
+        /// Limit on client log messages written to stdout, and thus the log file.
+        /// Used to prevent extreme log sizes for spammed errors etc.
+        /// Must restart the game for this to take effect.
+        /// </summary>
+        public static readonly CVarDef<int> ClientLogLimit =
+            CVarDef.Create("log.client_log_limit", 5000, CVar.CLIENTONLY | CVar.ARCHIVE);
+
         /*
          * Light
          */
