@@ -42,7 +42,7 @@ namespace Robust.Shared.Log
         private const string LogAfterLevel = AnsiFgDefault + "] ";
 
         private readonly Stream _stream = new BufferedStream(System.Console.OpenStandardOutput(), 128 * 1024);
-        private readonly int _logLimit = int.MaxValue;
+        internal int LogLimit = int.MaxValue;
         private int _logCount;
 
         private readonly StringBuilder _line = new(1024);
@@ -87,14 +87,6 @@ namespace Robust.Shared.Log
             };
         }
 
-        /// <summary>
-        /// Create a console log handler that discards logs past a certain limit.
-        /// </summary>
-        public ConsoleLogHandler(int logLimit) : this()
-        {
-            _logLimit = logLimit;
-        }
-
         [UsedImplicitly]
         public static void TryDetachFromConsoleWindow()
         {
@@ -108,7 +100,7 @@ namespace Robust.Shared.Log
 
         public void Log(string sawmillName, LogEvent message)
         {
-            if (_logCount >= _logLimit)
+            if (_logCount >= LogLimit)
                 return; // no 1GB log file thank you
 
             _logCount++;

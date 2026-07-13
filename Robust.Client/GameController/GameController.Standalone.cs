@@ -97,8 +97,7 @@ namespace Robust.Client
         {
             _displayMode = mode;
 
-            var logLimit = _configurationManager.GetCVar(CVars.ClientLogLimit);
-            if (!StartupSystemSplash(options, logHandlerFactory, logLimit))
+            if (!StartupSystemSplash(options, logHandlerFactory))
             {
                 _logger.Fatal("Failed to start game controller!");
                 return;

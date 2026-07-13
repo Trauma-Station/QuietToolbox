@@ -362,13 +362,15 @@ namespace Robust.Client
         internal bool StartupSystemSplash(
             GameControllerOptions options,
             Func<ILogHandler>? logHandlerFactory,
-            int logLimit = int.MaxValue,
             bool globalExceptionLog = false)
         {
             Options = options;
             ReadInitialLaunchState();
 
-            SetupLogging(_logManager, logHandlerFactory ?? (() => new ConsoleLogHandler(logLimit)), globalExceptionLog);
+            var handler = logHandlerFactory is { } factory
+                ? factory()
+                : new ConsoleLogHandler();
+            SetupLogging(_logManager, handler, globalExceptionLog);
 
             if (_commandLineArgs != null)
             {
@@ -424,6 +426,9 @@ namespace Robust.Client
             {
                 _configurationManager.OverrideConVars(_commandLineArgs.CVars);
             }
+
+            if (handler is ConsoleLogHandler consoleHandler)
+                consoleHandler.LogLimit = _configurationManager.GetCVar(CVars.ClientLogLimit);
 
             ProfileOptSetup.Setup(_configurationManager);
 
@@ -705,10 +710,10 @@ namespace Robust.Client
 
         internal static void SetupLogging(
             ILogManager logManager,
-            Func<ILogHandler> logHandlerFactory,
+            ILogHandler handler,
             bool globalExceptionLog)
         {
-            logManager.RootSawmill.AddHandler(logHandlerFactory());
+            logManager.RootSawmill.AddHandler(handler);
 
             //logManager.GetSawmill("res.typecheck").Level = LogLevel.Info;
             logManager.GetSawmill("res.tex").Level = LogLevel.Info;
