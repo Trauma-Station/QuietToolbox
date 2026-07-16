@@ -34,7 +34,8 @@ jobs:
         git submodule update --init --recursive
         cp global.json ..
 
-    - name: Install dependencies
+    - &restore
+      name: Install dependencies
       run: dotnet restore
 
     - name: Build Project
@@ -53,6 +54,18 @@ jobs:
           bin/Content.MapRenderer/*.pdb
           bin/Content.Tests/*.dll
         retention-days: 1
+
+  build-release:
+    needs: build # just to not run it if it fails on debug, doesnt actually need it
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+    - *checkout
+    - *submodule
+    - *restore
+    - name: Build Project
+      run: dotnet build --configuration Release --no-restore /m
 
   # Run Content.Tests unit tests separately, nothing depends on them so it's quick (~2 mins total)
   test-unit:
@@ -197,13 +210,14 @@ jobs:
 
   ci-success:
     name: Build & Test Debug
-    needs: [build, test-unit, test-main, test-maps, test-gamerules, test-map-render]
+    needs: [build, build-release, test-unit, test-main, test-maps, test-gamerules, test-map-render]
     runs-on: ubuntu-latest
     if: always()
     steps:
       - name: CI succeeded
         run: |
           if [[ "${{ needs.build.result }}" != "success" ||
+                "${{ needs.build-release.result }}" != "success" ||
                 "${{ needs.test-unit.result }}" != "success" ||
                 "${{ needs.test-main.result }}" != "success" ||
                 "${{ needs.test-maps.result }}" != "success" ||
