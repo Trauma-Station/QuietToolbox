@@ -792,7 +792,7 @@ namespace Robust.Shared
         /// Also gets saved to content bundles so replays can use the correct engine.
         /// </summary>
         public static readonly CVarDef<string> BuildEngineType =
-            CVarDef.Create("build.engine_type", "RobustToolbox");
+            CVarDef.Create("build.engine_type", "QuietToolbox");
 
         /// <summary>
         /// Engine version that launcher needs to connect to this server.
