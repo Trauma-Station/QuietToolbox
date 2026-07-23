@@ -12,7 +12,7 @@ using static Robust.Shared.Utility.SpriteSpecifier;
 
 namespace Robust.Shared.Serialization.TypeSerializers.Implementations
 {
-    public abstract class SpriteSpecifierSerializer :
+    public abstract partial class SpriteSpecifierSerializer :
         ITypeSerializer<Texture, ValueDataNode>,
         ITypeSerializer<EntityPrototype, ValueDataNode>,
         ITypeSerializer<Rsi, MappingDataNode>,
@@ -29,7 +29,7 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations
         // So I guess it might as well go here?
         public static readonly ResPath TextureRoot = new("/Textures");
 
-        private Prototypes.IPrototypeManager? _proto;
+        [Dependency] private Prototypes.IPrototypeManager _proto = default!;
 
         Texture ITypeReader<Texture, ValueDataNode>.Read(ISerializationManager serializationManager,
             ValueDataNode node,
@@ -104,7 +104,6 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations
             IDependencyCollection dependencies,
             ISerializationContext? context)
         {
-            _proto ??= dependencies.Resolve<Prototypes.IPrototypeManager>();
             return !_proto.HasIndex<Prototypes.EntityPrototype>(node.Value)
                 ? new ErrorNode(node, $"Invalid {nameof(EntityPrototype)} id")
                 : new ValidatedValueNode(node);
