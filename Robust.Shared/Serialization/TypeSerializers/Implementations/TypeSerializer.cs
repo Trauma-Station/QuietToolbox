@@ -12,9 +12,9 @@ using Robust.Shared.Serialization.TypeSerializers.Interfaces;
 namespace Robust.Shared.Serialization.TypeSerializers.Implementations
 {
     [TypeSerializer]
-    public sealed class TypeSerializer : ITypeSerializer<Type, ValueDataNode>, ITypeCopyCreator<Type>
+    public sealed partial class TypeSerializer : BaseTypeSerializer, ITypeSerializer<Type, ValueDataNode>, ITypeCopyCreator<Type>
     {
-        private IReflectionManager? _refMan;
+        [Dependency] private IReflectionManager _refMan = default!;
 
         private static readonly Dictionary<string, Type> Shortcuts = new ()
         {
@@ -27,7 +27,6 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations
             if (Shortcuts.ContainsKey(node.Value))
                 return new ValidatedValueNode(node);
 
-            _refMan ??= dependencies.Resolve<IReflectionManager>();
             return _refMan.GetType(node.Value) == null
                 ? new ErrorNode(node, $"Type '{node.Value}' not found.")
                 : new ValidatedValueNode(node);
@@ -40,7 +39,6 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations
             if (Shortcuts.TryGetValue(node.Value, out var shortcutType))
                 return shortcutType;
 
-            _refMan ??= dependencies.Resolve<IReflectionManager>();
             var type = _refMan.GetType(node.Value);
 
             return type == null

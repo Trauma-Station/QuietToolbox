@@ -14,9 +14,9 @@ using Robust.Shared.Utility;
 namespace Robust.Shared.Serialization.TypeSerializers.Implementations;
 
 [TypeSerializer]
-public sealed class ResPathSerializer : ITypeSerializer<ResPath, ValueDataNode>, ITypeCopyCreator<ResPath>
+public sealed partial class ResPathSerializer : ITypeSerializer<ResPath, ValueDataNode>, ITypeCopyCreator<ResPath>
 {
-    private IResourceManager? _resMan;
+    [Dependency] private IResourceManager _resMan = default!;
 
     public ValidationNode Validate(ISerializationManager serializationManager, ValueDataNode node,
         IDependencyCollection dependencies, ISerializationContext? context = null)
@@ -37,7 +37,6 @@ public sealed class ResPathSerializer : ITypeSerializer<ResPath, ValueDataNode>,
 
         try
         {
-            _resMan ??= dependencies.Resolve<IResourceManager>();
             if (node.Value.EndsWith(ResPath.Separator))
             {
                 if (_resMan.ContentGetDirectoryEntries(path).Any())

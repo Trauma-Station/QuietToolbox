@@ -12,14 +12,13 @@ namespace Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 /// Simple string serializer that just validates that strings correspond to valid component names.
 /// This will not fail when it encounters explicitly ignored components.
 /// </summary>
-public sealed class ComponentNameSerializer : ITypeSerializer<string, ValueDataNode>
+public sealed partial class ComponentNameSerializer : ITypeSerializer<string, ValueDataNode>
 {
-    private IComponentFactory? _factory;
+    [Dependency] private IComponentFactory _factory = default!;
 
     public ValidationNode Validate(ISerializationManager serializationManager, ValueDataNode node,
         IDependencyCollection dependencies, ISerializationContext? context = null)
     {
-        _factory ??= dependencies.Resolve<IComponentFactory>();
         if (!_factory.TryGetRegistration(node.Value, out _) && _factory.GetComponentAvailability(node.Value) != ComponentAvailability.Ignore)
             return new ErrorNode(node, $"Unknown component kind: {node.Value}");
 
