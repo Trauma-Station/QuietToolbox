@@ -1273,7 +1273,7 @@ namespace Robust.Client.GameStates
                 }
                 catch (Exception e)
                 {
-                    throw new Exception(e, $"Caught exception while detaching children of {_entities.ToPrettyString(id)}");
+                    throw new Exception($"Caught exception while detaching children of {_entities.ToPrettyString(id)}", e);
                 }
 
                 // Finally, delete the entity.
