@@ -67,7 +67,8 @@ namespace Robust.Shared.Containers
         /// <inheritdoc />
         protected internal override void InternalInsert(EntityUid toInsert, IEntityManager entMan)
         {
-            DebugTools.Assert(ContainedEntity == null);
+            DebugTools.Assert(ContainedEntity == null,
+                $"Tried to insert {entMan.ToPrettyString(toInsert)} into {entMan.ToPrettyString(Owner)}:{ID} but it already contained {entMan.ToPrettyString(ContainedEntity)}");
 
             #if DEBUG
             // TODO make this a proper debug assert when gun code no longer fudges client-side spawn prediction.
