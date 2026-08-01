@@ -79,7 +79,7 @@ namespace Robust.Client.GameObjects
                     var postShader = component.PostShaders[i];
                     if (!_postShaderIds.Add(postShader.Id))
                     {
-                        Log.Error("Duplicate post-shader id '{0}'.", postShader.Id);
+                        Log.Error("Duplicate post-shader id '{0}' found on {1}.", postShader.Id, ToPrettyString(uid));
                         component.PostShaders.RemoveAt(i--);
                         continue;
                     }
@@ -87,13 +87,13 @@ namespace Robust.Client.GameObjects
                     postShader.InsertionIndex = i;
                     if (postShader.Shader != null)
                     {
-                        Log.Warning("Post-shader '{0}' already has a shader instance during component initialization.", postShader.Id);
+                        Log.Warning("Post-shader '{0}' on {1} already has a shader instance during component initialization.", postShader.Id, ToPrettyString(uid));
                         continue;
                     }
 
                     if (!_prototypes.TryIndex(postShader.Prototype, out var prototype))
                     {
-                        Log.Error("Shader prototype '{0}' does not exist.", postShader.Prototype);
+                        Log.Error("Shader prototype '{0}' on ToPrettyString(id) does not exist.", postShader.Prototype, ToPrettyString(uid));
                         component.PostShaders.RemoveAt(i--);
                         continue;
                     }
