@@ -122,8 +122,8 @@ namespace Robust.Shared.Maths
 
         private static void Validate(float left, float top, float right, float bottom)
         {
-            Debug.Assert(!(left > right), "Left cannot be greater than Right.");
-            Debug.Assert(!(top > bottom), "Top cannot be greater than Bottom.");
+            Debug.Assert(!(left > right), $"Left ({left}) cannot be greater than Right ({right}).");
+            Debug.Assert(!(top > bottom), $"Top ({top}) cannot be greater than Bottom ({bottom}).");
         }
 
         public UIBox2(Vector2 leftTop, Vector2 rightBottom)
