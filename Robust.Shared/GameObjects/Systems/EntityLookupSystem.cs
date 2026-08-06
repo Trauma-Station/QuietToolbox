@@ -106,6 +106,8 @@ public sealed partial class EntityLookupSystem : EntitySystem
     /// </summary>
     public const LookupFlags DefaultFlags = LookupFlags.All;
 
+    private bool _caughtError;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -760,13 +762,24 @@ public sealed partial class EntityLookupSystem : EntitySystem
     /// </summary>
     public void UpdateEntityTree(EntityUid uid, TransformComponent? xform = null)
     {
-        if (!_xformQuery.Resolve(uid, ref xform))
-            return;
+        try
+        {
+            if (!_xformQuery.Resolve(uid, ref xform))
+                return;
 
-        if (!TryGetCurrentBroadphase(xform, out var broadphase))
-            return;
+            if (!TryGetCurrentBroadphase(xform, out var broadphase))
+                return;
 
-        AddOrUpdateEntityTree(broadphase.Owner, broadphase, uid, xform);
+            AddOrUpdateEntityTree(broadphase.Owner, broadphase, uid, xform);
+        }
+        catch (Exception e)
+        {
+            if (_caughtError)
+                return;
+
+            _caughtError = true;
+            Log.Error($"Caught error while updating entity tree for {ToPrettyString(uid)}", e);
+        }
     }
 
     private void AddOrUpdateEntityTree(EntityUid broadUid,
