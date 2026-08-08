@@ -140,7 +140,8 @@ public abstract partial class SharedJointSystem : EntitySystem
         if (!_physicsQuery.Resolve(aUid, ref bodyA, false) || !_physicsQuery.Resolve(bUid, ref bodyB, false))
             return;
 
-        DebugTools.Assert(Transform(aUid).MapID == Transform(bUid).MapID, "Attempted to initialize cross-map joint");
+        DebugTools.Assert(Transform(aUid).MapID == Transform(bUid).MapID,
+            $"Attempted to initialize cross-map joint between {ToPrettyString(aUid)} ({ToPrettyString(Transform(aUid).MapUid)}) and {ToPrettyString(bUid)} ({ToPrettyString(Transform(bUid).MapUid)})");
 
         jointComponentA ??= EnsureComp<JointComponent>(aUid);
         jointComponentB ??= EnsureComp<JointComponent>(bUid);
