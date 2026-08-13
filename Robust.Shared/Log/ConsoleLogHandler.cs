@@ -43,7 +43,9 @@ namespace Robust.Shared.Log
 
         private readonly Stream _stream = new BufferedStream(System.Console.OpenStandardOutput(), 128 * 1024);
         internal int LogLimit = int.MaxValue;
+        internal int ErrorLimit = int.MaxValue;
         private int _logCount;
+        private int _errorCount;
 
         private readonly StringBuilder _line = new(1024);
 
@@ -103,9 +105,17 @@ namespace Robust.Shared.Log
             if (_logCount >= LogLimit)
                 return; // no 1GB log file thank you
 
+            var robustLevel = message.Level.ToRobust();
+            if (robustLevel == LogLevel.Error)
+            {
+                if (_errorCount >= ErrorLimit)
+                    return;
+
+                _errorCount++;
+            }
+
             _logCount++;
 
-            var robustLevel = message.Level.ToRobust();
             lock (_stream)
             {
                 _line

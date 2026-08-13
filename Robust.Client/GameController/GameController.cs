@@ -429,7 +429,10 @@ namespace Robust.Client
             }
 
             if (handler is ConsoleLogHandler consoleHandler)
+            {
                 consoleHandler.LogLimit = _configurationManager.GetCVar(CVars.ClientLogLimit);
+                consoleHandler.ErrorLimit = _configurationManager.GetCVar(CVars.ClientErrorLimit);
+            }
 
             ProfileOptSetup.Setup(_configurationManager);
 

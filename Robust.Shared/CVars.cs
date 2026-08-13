@@ -958,7 +958,13 @@ namespace Robust.Shared
         /// Must restart the game for this to take effect.
         /// </summary>
         public static readonly CVarDef<int> ClientLogLimit =
-            CVarDef.Create("log.client_log_limit", 5000, CVar.CLIENTONLY | CVar.ARCHIVE);
+            CVarDef.Create("log.client_log_limit", 20000, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+        /// <summary>
+        /// Same as <see cref="ClientLogLimit"/> but only applies for errors.
+        /// </summary>
+        public static readonly CVarDef<int> ClientErrorLimit =
+            CVarDef.Create("log.client_error_limit", 100, CVar.CLIENTONLY | CVar.ARCHIVE);
 
         /*
          * Light
