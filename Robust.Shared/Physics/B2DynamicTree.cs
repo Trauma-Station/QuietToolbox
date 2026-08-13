@@ -981,6 +981,9 @@ namespace Robust.Shared.Physics
 
         private void InsertLeaf(Proxy leaf, bool shouldRotate)
         {
+            if (leaf == Proxy.Free)
+                throw new Exception($"Tried to add an invalid proxy to a B2DynamicTree<{nameof(T)}>");
+
             if (_root == Proxy.Free)
 	        {
 		        _root = leaf;
@@ -1032,7 +1035,8 @@ namespace Robust.Shared.Physics
 	        }
 
 	        // Stage 3: walk back up the tree fixing heights and AABBs
-	        var index = nodes[leaf].Parent;
+	        var parent = nodes[leaf].Parent;
+	        var index = parent;
 	        while (index != Proxy.Free)
             {
                 ref var indexNode = ref nodes[index];
@@ -1057,6 +1061,8 @@ namespace Robust.Shared.Physics
 		        }
 
 		        index = indexNode.Parent;
+                if (index == parent)
+                    throw new Exception($"Infinite loop detected in B2DynamicTree<{nameof(T)}>.Insert");
 	        }
         }
 
