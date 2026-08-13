@@ -131,7 +131,7 @@ namespace Robust.Shared.Physics.Systems
 
             foreach (var proxy in _gridMoveBuffer)
             {
-                if (!_xformQuery.TryComp(proxy.Entity, out var proxyXform))
+                if (proxy == default || !_xformQuery.TryComp(proxy.Entity, out var proxyXform))
                     continue;
 
                 moveBuffer.Add(proxy);
