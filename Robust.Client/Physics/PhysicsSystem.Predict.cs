@@ -203,8 +203,11 @@ public sealed partial class PhysicsSystem
             var contact = contacts[i];
             var uidA = contact.EntityA;
             var uidB = contact.EntityB;
-            var bodyATransform = GetPhysicsTransform(uidA, xformQuery.GetComponent(uidA));
-            var bodyBTransform = GetPhysicsTransform(uidB, xformQuery.GetComponent(uidB));
+            if (!xformQuery.TryComp(uidA, out var xformA) || !xformQuery.TryComp(uidB, out var xformB))
+                continue;
+
+            var bodyATransform = GetPhysicsTransform(uidA, xformA);
+            var bodyBTransform = GetPhysicsTransform(uidB, xformB);
             var wasTouching = contact.IsTouching;
 
             contact.UpdateIsTouching(bodyATransform, bodyBTransform);
