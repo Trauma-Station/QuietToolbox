@@ -130,14 +130,11 @@ public sealed partial class PhysicsSystem
             var uidA = contact.EntityA;
             var uidB = contact.EntityB;
 
-            if (!bodyA.CanCollide || !bodyB.CanCollide)
+            if (!bodyA.CanCollide || !bodyB.CanCollide || !xformQuery.TryComp(uidA, out var xformA) || !xformQuery.TryComp(uidB, out var xformB))
             {
                 contact.IsTouching = false;
                 continue;
             }
-
-            var xformA = xformQuery.GetComponent(uidA);
-            var xformB = xformQuery.GetComponent(uidB);
 
             if ((contact.Flags & ContactFlags.Filter) != 0x0)
             {
