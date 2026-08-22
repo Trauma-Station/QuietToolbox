@@ -319,7 +319,7 @@ public partial class PrototypeManager
         var kindData = _kinds[kind];
         Dictionary<string, ExtractedMappingData>? variantData = null;
 
-        var partialOnly = IsTag(typeNode, "!PartialOnly");
+        var partialOnly = IsTag(typeNode, PartialOnlyTag);
         if (!dataNode.TryGet<ValueDataNode>(IdDataFieldAttribute.Name, out var idNode))
         {
             // Check if the ID node is a CreateVariants node instead of a value.
@@ -438,9 +438,9 @@ public partial class PrototypeManager
             else
                 kindData.RawResults[id] = existing;
         }
-        else if (partialOnly)
+        else if (partial)
         {
-            return;
+            throw new PrototypeLoadException($"Found partial prototype {kind} with ID '{id}' that had no full prototype to modify!");
         }
         else
         {
