@@ -405,7 +405,7 @@ namespace Robust.Shared.GameObjects
                 Array.Fill(delta.LastModifiedFields, curTick);
             }
 
-            component.Networked = reg.NetID != null;
+            component.Networked = reg.Networked;
 
             var eventArgs = new AddedComponentEventArgs(new ComponentEventArgs(component, uid), reg);
             ComponentAdded?.Invoke(eventArgs);
@@ -742,7 +742,7 @@ namespace Robust.Shared.GameObjects
             if (!terminating)
             {
                 var reg = _componentFactory.GetRegistration(component);
-                DebugTools.Assert(component.Networked == (reg.NetID != null));
+                DebugTools.Assert(component.Networked == reg.Networked);
                 if (reg.NetID is {} id)
                 {
                     if (!metadata.NetComponents.Remove(id) && !metadata.IgnoredNetComponents.Contains(id))
