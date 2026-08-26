@@ -840,6 +840,12 @@ namespace Robust.Shared.Prototypes
                 throw new UnknownPrototypeException(id, kind);
             }
 
+            if (string.IsNullOrEmpty(id))
+            {
+                prototype = null;
+                return false;
+            }
+
             return index.Instances.TryGetValue(id, out prototype);
         }
 
