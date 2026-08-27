@@ -113,7 +113,7 @@ public abstract partial class SharedUserInterfaceSystem : EntitySystem
             (!uiComp.Actors.TryGetValue(msg.UiKey, out var actors) ||
              !actors.Contains(sender)))
         {
-            Log.Debug($"UI {msg.UiKey} got BoundInterfaceMessageWrapMessage from a client who was not subscribed: {ToPrettyString(sender)}");
+            Log.Debug($"UI {msg.UiKey} on {ToPrettyString(uid)} got a BUI message {msg.Message.GetType()} from a client who was not subscribed: {ToPrettyString(sender)}");
             return;
         }
 
