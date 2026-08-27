@@ -652,10 +652,7 @@ namespace Robust.Shared.GameObjects
             }
 
             if (component.Deleted)
-            {
-                _sawmill.Warning($"Deleting an already deleted component. Entity: {ToPrettyString(uid)}, Component: {_componentFactory.GetComponentName(component.GetType())}.");
                 return;
-            }
 
 #if EXCEPTION_TOLERANCE
             try
