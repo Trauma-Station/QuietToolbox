@@ -125,7 +125,8 @@ public abstract partial class SharedContainerSystem
         RaiseLocalEvent(toInsert, new EntGotInsertedIntoContainerMessage(toInsert, container), true);
 
         // The sheer number of asserts tells you about how little I trust container and parenting code.
-        DebugTools.Assert((meta.Flags & MetaDataFlags.InContainer) != 0, "invalid metadata flags after events");
+        DebugTools.Assert(!TerminatingOrDeleted(toInsert, meta), $"Container events deleted {meta.EntityName} ({meta.EntityPrototype?.ID}) when trying to insert into {ToPrettyString(container.Owner)}:{container.ID}");
+        DebugTools.Assert((meta.Flags & MetaDataFlags.InContainer) != 0, $"Invalid metadata flags after events for inserting {ToPrettyString(toInsert)} into {ToPrettyString(container.Owner)}:{container.ID}");
         DebugTools.Assert(!transform.Anchored, "entity is anchored");
         DebugTools.AssertEqual(transform.ParentUid, container.Owner, "Wrong parent");
         DebugTools.AssertEqual(transform.LocalPosition, Vector2.Zero);

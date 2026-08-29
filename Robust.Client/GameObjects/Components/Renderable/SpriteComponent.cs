@@ -552,8 +552,8 @@ namespace Robust.Client.GameObjects
                     else
                     {
                         Logger.ErrorS(LogCategory,
-                            $"State '{stateid}' not found in RSI: '{theRsi.Path}'.",
-                            stateid);
+                            "State {stateid} not found in RSI: {path} at {trace}",
+                            stateid, theRsi.Path, Environment.StackTrace);
                     }
                 }
             }

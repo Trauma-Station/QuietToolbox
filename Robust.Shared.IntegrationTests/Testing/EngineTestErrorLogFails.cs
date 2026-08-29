@@ -21,7 +21,7 @@ public sealed class EngineTestErrorLogFails
         Assert.DoesNotThrow(() => pair.Client.Log.Error("Mogus"));
 
         // But it should get very mad here.
-        Assert.ThrowsAsync<MultipleAssertException>(async () => await pair.CleanReturnAsync());
+        Assert.ThrowsAsync<AssertionException>(async () => await pair.CleanReturnAsync());
 
         Assert.That(pair.State, NUnit.Framework.Is.EqualTo(PairState.Dead), "Expected the pair's return to result in its death.");
 
@@ -41,7 +41,7 @@ public sealed class EngineTestErrorLogFails
         Assert.DoesNotThrow(() => pair.Server.Log.Error("Mogus"));
         Assert.DoesNotThrow(() => pair.Client.Log.Error("Mogus"));
 
-        Assert.ThrowsAsync<MultipleAssertException>(async () => await pair.DisposeAsync());
+        Assert.ThrowsAsync<AssertionException>(async () => await pair.DisposeAsync());
 
         Assert.That(pair.State, NUnit.Framework.Is.EqualTo(PairState.Dead), "Expected the pair's return to result in its death.");
 
