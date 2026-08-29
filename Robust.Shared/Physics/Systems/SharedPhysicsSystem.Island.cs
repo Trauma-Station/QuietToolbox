@@ -500,23 +500,22 @@ public abstract partial class SharedPhysicsSystem
                 foreach (var (original, joint) in _islandJoints)
                 {
                     // TODO: Same here store physicscomp + transform on the joint, the savings are worth it.
-                    var bodyA = PhysicsQuery.GetComponent(joint.BodyAUid);
-                    var bodyB = PhysicsQuery.GetComponent(joint.BodyBUid);
-
-                    if (!bodyA.CanCollide || !bodyB.CanCollide)
+                    if (!PhysicsQuery.TryComp(joint.BodyAUid, out var bodyA) ||
+                        !PhysicsQuery.TryComp(joint.BodyBUid, out var bodyB) ||
+                        !bodyA.CanCollide || !bodyB.CanCollide)
                         continue;
 
                     joints.Add((original, joint));
 
                     if (!bodyA.Island)
                     {
-                        _bodyStack.Push(new Entity<PhysicsComponent, TransformComponent>(joint.BodyAUid, bodyA, XformQuery.GetComponent(joint.BodyAUid)));
+                        _bodyStack.Push(new Entity<PhysicsComponent, TransformComponent>(joint.BodyAUid, bodyA, Transform(joint.BodyAUid)));
                         bodyA.Island = true;
                     }
 
                     if (!bodyB.Island)
                     {
-                        _bodyStack.Push(new Entity<PhysicsComponent, TransformComponent>(joint.BodyBUid, bodyB, XformQuery.GetComponent(joint.BodyBUid)));
+                        _bodyStack.Push(new Entity<PhysicsComponent, TransformComponent>(joint.BodyBUid, bodyB, Transform(joint.BodyBUid)));
                         bodyB.Island = true;
                     }
                 }
@@ -820,10 +819,11 @@ public abstract partial class SharedPhysicsSystem
             for (var i = 0; i < island.Joints.Count; i++)
             {
                 var joint = island.Joints[i].Joint;
-                if (!joint.Enabled) continue;
+                if (!joint.Enabled ||
+                    !PhysicsQuery.TryComp(joint.BodyAUid, out var bodyA) ||
+                    !PhysicsQuery.TryComp(joint.BodyBUid, out var bodyB))
+                    continue;
 
-                var bodyA = PhysicsQuery.GetComponent(joint.BodyAUid);
-                var bodyB = PhysicsQuery.GetComponent(joint.BodyBUid);
                 joint.InitVelocityConstraints(in data, in island, bodyA, bodyB, positions, angles, linearVelocities, angularVelocities);
             }
         }
