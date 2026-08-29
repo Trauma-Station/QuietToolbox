@@ -77,7 +77,9 @@ public sealed class PoolTestLogHandler : ILogHandler
             return;
 
         testContext.Flush();
-        _failingLogs.Add($"{line} Exception: {message.Exception}");
+        _failingLogs.Add(message.Exception is { } exception
+            ? $"{line} Exception: {exception}"
+            : line);
     }
 
     public void ClearContext()

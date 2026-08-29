@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
@@ -20,13 +22,28 @@ public partial class TestPair<TServer, TClient>
 {
     private void ReportErrorLogs()
     {
-        using (Assert.EnterMultipleScope())
-        {
-            foreach (var log in ServerLogHandler.FailingLogs)
-                Assert.Fail(log);
+        if (ServerLogHandler.FailingLogs.Count == 0 && ClientLogHandler.FailingLogs.Count == 0)
+            return; // no errors, all good
 
-            foreach (var log in ClientLogHandler.FailingLogs)
-                Assert.Fail(log);
+        var sb = new StringBuilder();
+        AppendLogs(sb, ServerLogHandler.FailingLogs, "server");
+        AppendLogs(sb, ClientLogHandler.FailingLogs, "client");
+        Assert.Fail(sb.ToString());
+    }
+
+    private void AppendLogs(StringBuilder sb, IReadOnlyList<string> logs, string name)
+    {
+        if (logs.Count == 0)
+            return;
+
+        sb.Append(logs.Count);
+        sb.Append(' ');
+        sb.Append(name);
+        sb.Append(" errors logged:\n");
+        foreach (var log in logs)
+        {
+            sb.Append(log);
+            sb.Append('\n');
         }
     }
 
