@@ -695,7 +695,15 @@ namespace Robust.Shared.GameObjects
             }
 
             if (transform._children.Count != 0)
-                _sawmill.Error($"Failed to delete all children of entity: {ToPrettyString(uid)}");
+            {
+                var children = new List<string>(transform._children.Count);
+                foreach (var child in transform._children)
+                {
+                    children.Add(ToPrettyString(child));
+                }
+                var childNames = string.Join(", ", children);
+                _sawmill.Error($"Failed to delete all children of entity {ToPrettyString(uid)}. Children: {childNames}");
+            }
 
             // Shut down all components.
             foreach (var component in InSafeOrder(_entCompIndex[uid]))
