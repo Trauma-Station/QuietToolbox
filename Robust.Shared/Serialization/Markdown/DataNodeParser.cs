@@ -104,7 +104,7 @@ public static class DataNodeParser
         var ev = parser.Consume<Scalar>();
 
         if (!ev.Anchor.IsEmpty)
-            throw new NotSupportedException();
+            throw new NotSupportedException($"YML Anchor is not allowed in key '{ev}'");
 
         return (ev.Value, ConvertTag(ev.Tag, state.ParserState));
     }
