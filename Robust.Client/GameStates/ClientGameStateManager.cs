@@ -1331,16 +1331,17 @@ namespace Robust.Client.GameStates
 
                 // Then detach all children.
                 var childEnumerator = xform.ChildEnumerator;
+                var child = EntityUid.Invalid;
                 try
                 {
-                    while (childEnumerator.MoveNext(out var child))
+                    while (childEnumerator.MoveNext(out child))
                     {
                         xformSys.DetachEntity(child, xforms.Get(child), metas.Get(child), xform);
                     }
                 }
                 catch (Exception e)
                 {
-                    throw new Exception($"Caught exception while detaching children of {_entities.ToPrettyString(id)}", e);
+                    throw new Exception($"Caught exception while detaching child {_entities.ToPrettyString(child)} of {_entities.ToPrettyString(id)}", e);
                 }
 
                 // Finally, delete the entity.
