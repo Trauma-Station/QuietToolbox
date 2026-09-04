@@ -91,6 +91,11 @@ internal sealed class HeadlessAudioManager : IAudioInternal
     }
 
     /// <inheritdoc />
+    public void SetDopplerFactor(float factor)
+    {
+    }
+
+    /// <inheritdoc />
     public void Remove(AudioStream stream)
     {
     }
