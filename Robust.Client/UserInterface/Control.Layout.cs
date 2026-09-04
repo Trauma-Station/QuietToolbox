@@ -744,7 +744,7 @@ namespace Robust.Client.UserInterface
             maxW = MathHelper.Clamp(maxConstraint, minW, maxW);
 
             var minConstraint = float.IsNaN(setW) ? 0 : setW;
-            minW = MathHelper.Clamp(maxW, minConstraint, minW);
+            minW = MathHelper.Clamp(minConstraint, minW, maxW);
 
             var minH = control._minHeight;
             var setH = control._setHeight;
