@@ -1404,6 +1404,21 @@ namespace Robust.Shared
             CVarDef.Create("audio.attenuation", (int) Attenuation.LinearDistanceClamped, CVar.REPLICATED | CVar.ARCHIVE);
 
         /// <summary>
+        /// Scales listener and source velocities, which (if less than 1) de-emphasizes the doppler pitch-shifting effect
+        /// and (if more than 1) exaggerates the effect. Setting this to 0 will disable the doppler effect.
+        /// </summary>
+        /// <remarks>
+        /// This is replicated rather than client-only because it makes more sense to control this on a server-level
+        /// depending on what the game in question requires.
+        ///
+        /// Trazido do RobustToolbox oficial porque a ausencia dele quebrava a conexao: o CVar e REPLICATED, entao todo
+        /// cliente que roda o motor oficial o envia ao conectar, e um servidor que nao o conhece derruba a sessao com
+        /// "Failed to deserialize packet". Era o unico CVar que divergia entre os dois motores, 286 contra 284.
+        /// </remarks>
+        public static readonly CVarDef<float> AudioDopplerFactor =
+            CVarDef.Create("audio.doppler_factor", 1f, CVar.REPLICATED | CVar.ARCHIVE);
+
+        /// <summary>
         /// Whether to enable HRTF (head-related transfer function) support for positional audio.
         /// </summary>
         /// <remarks>
