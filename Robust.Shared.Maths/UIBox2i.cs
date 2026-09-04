@@ -25,7 +25,7 @@ public struct UIBox2i : IEquatable<UIBox2i>, ISpanFormattable
         readonly get => _left;
         set
         {
-            Debug.Assert(!(value > _right), "Left cannot be greater than Right.");
+            Debug.Assert(value <= _right, $"Left ({value}) cannot be set to be greater than Right ({_right})");
             _left = Math.Min(value, _right);
         }
     }
@@ -35,7 +35,7 @@ public struct UIBox2i : IEquatable<UIBox2i>, ISpanFormattable
         readonly get => _top;
         set
         {
-            Debug.Assert(!(value > _bottom), "Top cannot be greater than Bottom.");
+            Debug.Assert(value <= _bottom, $"Top ({value}) cannot be set to be greater than Bottom ({_bottom})");
             _top = Math.Min(value, _bottom);
         }
     }
@@ -45,7 +45,7 @@ public struct UIBox2i : IEquatable<UIBox2i>, ISpanFormattable
         readonly get => _right;
         set
         {
-            Debug.Assert(!(value < _left), "Right cannot be less than Left.");
+            Debug.Assert(value >= _left, $"Right ({value}) cannot be set to be less than Left ({_left}).");
             _right = Math.Max(value, _left);
         }
     }
@@ -55,7 +55,7 @@ public struct UIBox2i : IEquatable<UIBox2i>, ISpanFormattable
         readonly get => _bottom;
         set
         {
-            Debug.Assert(!(value < _top), "Bottom cannot be less than Top.");
+            Debug.Assert(value >= _top, $"Bottom ({value}) cannot be set to be less than Top ({_top})");
             _bottom = Math.Max(value, _top);
         }
     }
@@ -65,8 +65,8 @@ public struct UIBox2i : IEquatable<UIBox2i>, ISpanFormattable
         readonly get => _topLeft;
         set
         {
-            Debug.Assert(!(value.X > _right), "TopLeft.X cannot be greater than Right.");
-            Debug.Assert(!(value.Y > _bottom), "TopLeft.Y cannot be greater than Bottom.");
+            Debug.Assert(value.X <= _right, $"TopLeft.X ({value.X}) cannot be set to be greater than Right ({_right})");
+            Debug.Assert(value.Y <= _bottom, $"TopLeft.Y ({value.Y}) cannot be set to be greater than Bottom ({_bottom})");
             _topLeft = Vector2i.ComponentMin(value, _bottomRight);
         }
     }
@@ -76,8 +76,8 @@ public struct UIBox2i : IEquatable<UIBox2i>, ISpanFormattable
         readonly get => _bottomRight;
         set
         {
-            Debug.Assert(!(value.X < _left), "BottomRight.X cannot be less than Left.");
-            Debug.Assert(!(value.Y < _top), "BottomRight.Y cannot be less than Top.");
+            Debug.Assert(value.X >= _left, $"BottomRight.X ({value.X}) cannot be set to be less than Left ({_left})");
+            Debug.Assert(value.Y >= _top, $"BottomRight.Y ({value.Y}) cannot be set to be less than Top ({_top})");
             _bottomRight = Vector2i.ComponentMax(value, _topLeft);
         }
     }
@@ -96,8 +96,8 @@ public struct UIBox2i : IEquatable<UIBox2i>, ISpanFormattable
 
     private static void Validate(int left, int top, int right, int bottom)
     {
-        Debug.Assert(!(left > right), "Left cannot be greater than Right.");
-        Debug.Assert(!(top > bottom), "Top cannot be greater than Bottom.");
+        Debug.Assert(left <= right, $"Left ({left}) cannot be greater than Right ({right})");
+        Debug.Assert(top <= bottom, $"Top ({top}) cannot be greater than Bottom ({bottom})");
     }
 
     public UIBox2i(Vector2i topLeft, Vector2i bottomRight)
