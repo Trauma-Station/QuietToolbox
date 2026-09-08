@@ -54,7 +54,7 @@ namespace Robust.Shared.Maths
             readonly get => _left;
             set
             {
-                Debug.Assert(value <= _right, $"Left ({value}) cannot be greater than Right ({_right})");
+                Debug.Assert(!(value > _right), $"Left ({value}) cannot be greater than Right ({_right})");
                 _left = MathF.Min(value, _right);
             }
         }
@@ -67,7 +67,7 @@ namespace Robust.Shared.Maths
             readonly get => _bottom;
             set
             {
-                Debug.Assert(value <= _top, $"Bottom ({value}) cannot be greater than Top ({_top})");
+                Debug.Assert(!(value > _top), $"Bottom ({value}) cannot be greater than Top ({_top})");
                 _bottom = MathF.Min(value, _top);
             }
         }
@@ -80,7 +80,7 @@ namespace Robust.Shared.Maths
             readonly get => _right;
             set
             {
-                Debug.Assert(value >= _left, $"Right ({value}) cannot be less than Left ({_left})");
+                Debug.Assert(!(value < _left), $"Right ({value}) cannot be less than Left ({_left})");
                 _right = MathF.Max(value, _left);
             }
         }
@@ -93,7 +93,7 @@ namespace Robust.Shared.Maths
             readonly get => _top;
             set
             {
-                Debug.Assert(value >= _bottom, $"Top ({value}) cannot be less than Bottom ({_bottom})");
+                Debug.Assert(!(value < _bottom), $"Top ({value}) cannot be less than Bottom ({_bottom})");
                 _top = MathF.Max(value, _bottom);
             }
         }
@@ -103,8 +103,8 @@ namespace Robust.Shared.Maths
             readonly get => _bottomLeft;
             set
             {
-                Debug.Assert(value.X <= _right, $"BottomLeft.X ({value.X}) cannot be greater than Right ({_right})");
-                Debug.Assert(value.Y <= _top, $"BottomLeft.Y ({value.Y}) cannot be greater than Top ({_top})");
+                Debug.Assert(!(value.X > _right), $"BottomLeft.X ({value.X}) cannot be greater than Right ({_right})");
+                Debug.Assert(!(value.Y > _top), $"BottomLeft.Y ({value.Y}) cannot be greater than Top ({_top})");
                 _bottomLeft = Vector2.Min(value, _topRight);
             }
         }
@@ -114,8 +114,8 @@ namespace Robust.Shared.Maths
             readonly get => _topRight;
             set
             {
-                Debug.Assert(value.X >= _left, $"TopRight.X ({value.X}) cannot be less than Left ({_left})");
-                Debug.Assert(value.Y >= _bottom, $"TopRight.Y ({value.Y}) cannot be less than Bottom ({_bottom})");
+                Debug.Assert(!(value.X < _left), $"TopRight.X ({value.X}) cannot be less than Left ({_left})");
+                Debug.Assert(!(value.Y < _bottom), $"TopRight.Y ({value.Y}) cannot be less than Bottom ({_bottom})");
                 _topRight = Vector2.Max(value, _bottomLeft);
             }
         }
@@ -217,8 +217,8 @@ namespace Robust.Shared.Maths
 
         private static void Validate(float left, float bottom, float right, float top)
         {
-            Debug.Assert(left <= right, $"Left ({left}) cannot be greater than Right ({right})");
-            Debug.Assert(bottom <= top, $"Bottom ({bottom}) cannot be greater than Top ({top})");
+            Debug.Assert(!(left > right), $"Left ({left}) cannot be greater than Right ({right})");
+            Debug.Assert(!(bottom > top), $"Bottom ({bottom}) cannot be greater than Top ({top})");
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
