@@ -169,7 +169,7 @@ namespace Robust.Client.GameObjects
         public override void RaisePredictiveEvent<T>(T msg)
         {
             var session = _playerManager.LocalSession;
-            DebugTools.AssertNotNull(session);
+            DebugTools.AssertNotNull(session, "Tried to raise a predictive event with no local session");
 
             var sequence = _stateMan.SystemMessageDispatched(msg);
             EntityNetManager?.SendSystemNetworkMessage(msg, sequence);
@@ -177,7 +177,9 @@ namespace Robust.Client.GameObjects
             if (!_stateMan.IsPredictionEnabled && _client.RunLevel != ClientRunLevel.SinglePlayerGame)
                 return;
 
-            DebugTools.Assert(_gameTiming.InPrediction && _gameTiming.IsFirstTimePredicted || _client.RunLevel == ClientRunLevel.SinglePlayerGame);
+            DebugTools.Assert(_gameTiming.InPrediction || _client.RunLevel == ClientRunLevel.SinglePlayerGame, $"Tried to raise a predictive event outside of prediction");
+            if (_gameTiming.InPrediction && !_gameTiming.IsFirstTimePredicted)
+                return; // don't spam 10 network messages
 
             var eventArgs = new EntitySessionEventArgs(session!);
             EventBus.RaiseEvent(EventSource.Local, msg);
