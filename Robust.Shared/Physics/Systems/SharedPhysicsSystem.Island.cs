@@ -431,6 +431,7 @@ public abstract partial class SharedPhysicsSystem
                 }
 
                 // Handle joints
+                _islandJoints.Clear();
                 if (RelayTargetQuery.TryGetComponent(bodyUid, out var relayComp))
                 {
                     foreach (var relay in relayComp.Relayed)
@@ -502,7 +503,8 @@ public abstract partial class SharedPhysicsSystem
                     // TODO: Same here store physicscomp + transform on the joint, the savings are worth it.
                     if (!PhysicsQuery.TryComp(joint.BodyAUid, out var bodyA) ||
                         !PhysicsQuery.TryComp(joint.BodyBUid, out var bodyB) ||
-                        !bodyA.CanCollide || !bodyB.CanCollide)
+                        !bodyA.CanCollide ||
+                        !bodyB.CanCollide)
                         continue;
 
                     joints.Add((original, joint));
@@ -519,8 +521,6 @@ public abstract partial class SharedPhysicsSystem
                         bodyB.Island = true;
                     }
                 }
-
-                _islandJoints.Clear();
             }
 
             int idx;
