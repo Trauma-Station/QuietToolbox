@@ -559,7 +559,7 @@ namespace Robust.Client.UserInterface
                 }
 
                 if (desired.X < 0 || desired.Y < 0 || !float.IsFinite(desired.X) || !float.IsFinite(desired.Y))
-                    throw new InvalidOperationException("Invalid size returned from Measure()");
+                    throw new InvalidOperationException($"Invalid size {desired} returned from Measure() on {this}");
 
                 var prev = DesiredSize;
                 DesiredSize = desired;

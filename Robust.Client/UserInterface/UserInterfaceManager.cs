@@ -373,6 +373,8 @@ namespace Robust.Client.UserInterface
             if (scissorBox != null)
             {
                 var clipMargin = control.RectDrawClipMargin;
+                if ((controlBox.Left - clipMargin) > (controlBox.Right + clipMargin))
+                    throw new Exception($"Bad control {control} with size {control.PixelSize} and set {control.SetSize}");
                 var clipTestBox = new UIBox2i(controlBox.Left - clipMargin, controlBox.Top - clipMargin,
                     controlBox.Right + clipMargin, controlBox.Bottom + clipMargin);
 
