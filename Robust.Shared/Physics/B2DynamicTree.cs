@@ -2014,21 +2014,28 @@ namespace Robust.Shared.Physics
 
                 // Skip bounds check with Unsafe.Add().
                 ref var node = ref Unsafe.Add(ref baseRef, nodeId);
-                if (node.Aabb.Intersects(aabb))
+                try
                 {
-                    if (node.IsLeaf)
+                    if (node.Aabb.Intersects(aabb))
                     {
-                        var proceed = callback(ref state, nodeId);
-                        if (proceed == false)
+                        if (node.IsLeaf)
                         {
-                            return;
+                            var proceed = callback(ref state, nodeId);
+                            if (proceed == false)
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            stack.Push(node.Child1);
+                            stack.Push(node.Child2);
                         }
                     }
-                    else
-                    {
-                        stack.Push(node.Child1);
-                        stack.Push(node.Child2);
-                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"Exception inside of B2DynamicTree.Query<{typeof(TState)}>: id={nodeId} node={node}", e);
                 }
             }
         }

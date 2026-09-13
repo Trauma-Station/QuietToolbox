@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Robust.Shared.Maths;
@@ -153,6 +154,9 @@ public sealed class DynamicTreeBroadPhase : IBroadPhase
                 return true;
             }
         }
+
+        if (tuple.callback == default)
+            throw new Exception($"Callback was somehow null when checking {tuple.aabb} against {typeof(TState)} for proxy {proxy}");
 
         return tuple.callback(ref tuple.state, item);
     }

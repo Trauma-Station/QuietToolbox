@@ -432,7 +432,15 @@ namespace Robust.Shared.Physics.Systems
             if ((proxy.Body.BodyType & BodyType.Static) != 0x0)
                 return;
 
-            QueryBroadphase(broadphaseComp.StaticTree, state, aabb);
+            try
+            {
+                QueryBroadphase(broadphaseComp.StaticTree, state, aabb);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Caught exception while finding pairs for {ToPrettyString(proxy.Entity)} with broadphase {ToPrettyString(proxyBroad.Owner)}: {e}");
+                pairBuffer.Clear();
+            }
         }
 
         private void QueryBroadphase(IBroadPhase broadPhase, (List<(FixtureProxy, FixtureProxy, PairFlag)>, HashSet<FixtureProxy> MoveBuffer, SharedBroadphaseSystem Broadphase, SharedPhysicsSystem PhysicsSystem, FixtureProxy) state, Box2 aabb)
