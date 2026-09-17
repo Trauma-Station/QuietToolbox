@@ -403,7 +403,8 @@ cmd-restart-desc = Gracefully restarts the server (not just the round).
 cmd-restart-help = Usage: {$command}
 
 cmd-shutdown-desc = Gracefully shuts down the server.
-cmd-shutdown-help = Usage: {$command}
+cmd-shutdown-help = Usage: {$command} [<Reason>]
+cmd-shutdown-hint-1 = Reason
 
 cmd-saveconfig-desc = Saves the server configuration to the config file.
 cmd-saveconfig-help = Usage: {$command}
