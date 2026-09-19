@@ -147,10 +147,17 @@ public sealed partial class ReplayLoadManager
 
     private void AddSorted(EntityUid uid, List<EntityUid> sortedList, HashSet<EntityUid> added, EntityQuery<TransformComponent> query)
     {
+        // skip entities that got immediately deleted, cant do much else about it
+        if (!query.TryComp(uid, out var xform))
+        {
+            _sawmill.Warning($"Skipping entity {uid} that was somehow deleted while loading");
+            return;
+        }
+
         if (!added.Add(uid))
             return;
 
-        var parent = query.Comp(uid).ParentUid;
+        var parent = xform.ParentUid;
         if (parent != EntityUid.Invalid)
             AddSorted(parent, sortedList, added, query);
 
