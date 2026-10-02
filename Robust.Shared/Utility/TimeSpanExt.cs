@@ -68,19 +68,22 @@ public static class TimeSpanExt
             return false;
 
         // Check the last character of the input for time unit indicators
-        switch (str[^1])
+        switch (str[^1].ToLowerInvariant())
         {
             case 's':
-            case 'S':
                 timeSpan = TimeSpan.FromSeconds(number);
                 return true;
             case 'm':
-            case 'M':
                 timeSpan = TimeSpan.FromMinutes(number);
                 return true;
             case 'h':
-            case 'H':
                 timeSpan = TimeSpan.FromHours(number);
+                return true;
+            case 'd':
+                timeSpan = TimeSpan.FromDays(number);
+                return true;
+            case 'w':
+                timeSpan = TimeSpan.FromDays(number * 7.0);
                 return true;
             default:
                 return false;
