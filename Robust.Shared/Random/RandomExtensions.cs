@@ -70,13 +70,13 @@ public static class RandomExtensions
 
     /// <summary>
     /// Picks a random element from a list, removes it from list and returns it.
-    /// This is O(n) as it preserves the order of other items in the list.
+    /// This is O(1) as it swap removes. Order is not preserved!
     /// </summary>
     public static T PickAndTake<T>(this IRobustRandom random, IList<T> list)
     {
         var index = random.Next(list.Count);
         var element = list[index];
-        list.RemoveAt(index);
+        list.RemoveSwap(index);
         return element;
     }
 
