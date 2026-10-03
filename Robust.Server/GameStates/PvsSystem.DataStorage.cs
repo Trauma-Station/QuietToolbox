@@ -123,10 +123,11 @@ internal sealed partial class PvsSystem
     /// </summary>
     private void ClearPvsData()
     {
-        WaitSendTask();
-        WaitLeaveTask();
+        _leaveTask?.WaitOne();
+        _leaveTask = null;
 
-        WaitDeletionTask();
+        _deletionTask?.WaitOne();
+        _deletionTask = null;
 
         _incomingReturns.Clear();
         _pendingReturns.Clear();
@@ -319,11 +320,11 @@ internal sealed partial class PvsSystem
         if (curTick < _lastReturn)
             throw new InvalidOperationException($"Time travel is not supported");
 
-        WaitLeaveTask();
+        _leaveTask?.WaitOne();
+        _leaveTask = null;
 
-        WaitSendTask();
-
-        WaitDeletionTask();
+        _deletionTask?.WaitOne();
+        _deletionTask = null;
 
         _lastReturn = curTick;
 

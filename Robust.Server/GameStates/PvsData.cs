@@ -128,7 +128,12 @@ internal sealed class PvsSession(ICommonSession session, ResizableMemoryRegion<P
     public uint LastInput;
 
     /// <summary>
-    /// The serialized game state object.
+    /// The game state for this tick,
+    /// </summary>
+    public GameState? State;
+
+    /// <summary>
+    /// The serialized <see cref="State"/> object.
     /// </summary>
     public MemoryStream? StateStream;
 
@@ -146,6 +151,7 @@ internal sealed class PvsSession(ICommonSession session, ResizableMemoryRegion<P
         Chunks.Clear();
         ChunkSet.Clear();
         States.Clear();
+        State = null;
     }
 }
 

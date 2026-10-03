@@ -762,13 +762,12 @@ namespace Robust.Client.GameStates
         }
 
         /// <summary>
-        ///     Infer implicit state data for newly created entities or entities in a full state.
+        ///     Infer implicit state data for newly created entities.
         /// </summary>
         /// <remarks>
         ///     Whenever a new entity is created, the server doesn't send full state data, given that much of the data
-        ///     can simply be obtained from the entity prototype information. Full states can also re-use this implicit
-        ///     data when an entity already exists client-side. This function basically creates a fake initial server
-        ///     state for any such entity. It does this by simply using the standard <see
+        ///     can simply be obtained from the entity prototype information. This function basically creates a fake
+        ///     initial server state for any newly created entity. It does this by simply using the standard <see
         ///     cref="IEntityManager.GetComponentState"/>.
         /// </remarks>
         public void MergeImplicitData()
@@ -880,11 +879,6 @@ namespace Robust.Client.GameStates
                     {
                         DebugTools.Assert(_entities.EntityExists(uid));
                         _resolvedEntityStates.Add((es, uid.Value, meta));
-
-                        // Existing entities in a full state still need their implicit prototype state merged into the full-rep cache.
-                        if (curState.FromSequence == GameTick.Zero)
-                            _created.Add(es.NetEntity);
-
                         continue;
                     }
 
