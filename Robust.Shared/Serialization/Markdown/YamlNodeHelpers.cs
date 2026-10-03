@@ -31,7 +31,7 @@ namespace Robust.Shared.Serialization.Markdown
                 ValueDataNode valueDataNode => (YamlScalarNode)valueDataNode,
                 MappingDataNode mappingDataNode => mappingDataNode.ToYaml(),
                 SequenceDataNode sequenceNode => sequenceNode.ToSequenceNode(),
-                _ => throw new ArgumentOutOfRangeException($"Invalid data node {node} ({node.GetType()})")
+                _ => throw new ArgumentOutOfRangeException($"Invalid data node {node.Tag} ({node.GetType()})")
             };
         }
     }

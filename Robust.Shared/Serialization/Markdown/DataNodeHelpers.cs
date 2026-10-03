@@ -15,7 +15,7 @@ public static class DataNodeHelpers
             MappingDataNode mapping => GetAllNodes(mapping),
             SequenceDataNode sequence => GetAllNodes(sequence),
             ValueDataNode value => GetAllNodes(value),
-            _ => throw new ArgumentOutOfRangeException($"Unsupported YML node type {node}")
+            _ => throw new ArgumentOutOfRangeException($"Unsupported YML node type {node.GetType()}")
         };
     }
 
