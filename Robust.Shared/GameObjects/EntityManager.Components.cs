@@ -678,7 +678,7 @@ namespace Robust.Shared.GameObjects
             }
             catch (Exception e)
             {
-                _sawmill.Error($"Caught exception during immediate component removal. Entity={ToPrettyString(component.Owner)}, type={component.GetType()}");
+                _sawmill.Error($"Caught exception during immediate component removal. Entity={ToPrettyString(component.Owner)}, type={component.GetType()}: {e}");
                 _runtimeLog.LogException(e, nameof(RemoveComponentImmediate));
             }
 #endif
