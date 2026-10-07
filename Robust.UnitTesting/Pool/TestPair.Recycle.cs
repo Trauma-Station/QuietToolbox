@@ -157,7 +157,7 @@ public partial class TestPair<TServer, TClient>
             case PairState.Ready:
                 break;
             case PairState.InUse:
-                await TestOut.WriteLineAsync($"{nameof(DisposeAsync)}: Dirty return of pair {Id} started");
+                await TestOut.WriteLineAsync($"{nameof(DisposeAsync)}: Dirty return of pair {Id} started @ {Environment.StackTrace}");
                 try
                 {
                     await OnDirtyDispose();

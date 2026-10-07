@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -110,7 +111,7 @@ internal sealed partial class PvsSystem
         if (!_xformQuery.TryGetComponent(uid, out var xform))
         {
             // Can happen if systems add deleted entities to PVS move event.
-            Log.Error($"Attempted to add non-existent entity {uid} to PVS override for session {session.Session}");
+            Log.Error($"Attempted to add non-existent entity {uid} to PVS override for session {session.Session} @ {Environment.StackTrace}");
             return false;
         }
 
