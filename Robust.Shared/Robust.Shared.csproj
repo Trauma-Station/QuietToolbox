@@ -26,7 +26,7 @@
     <PackageReference Include="SpaceWizards.Sodium" PrivateAssets="compile" />
     <!-- Add libsodium to control version, SpaceWizards.Sodium's dependency is behind -->
     <PackageReference Include="libsodium" />
-    <PackageReference Include="SixLabors.ImageSharp" />
+    <PackageReference Include="TraumaStation.ImageSharp" />
     <PackageReference Include="TerraFX.Interop.Windows" PrivateAssets="compile" />
     <PackageReference Include="Tracy-CSharp" />
 
