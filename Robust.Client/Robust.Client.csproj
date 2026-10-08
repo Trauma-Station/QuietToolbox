@@ -16,7 +16,7 @@
     <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Condition="'$(UseSystemSqlite)' == 'True'" PrivateAssets="compile" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Condition="'$(UseSystemSqlite)' != 'True'" PrivateAssets="compile" />
     <PackageReference Include="SpaceWizards.NFluidsynth" PrivateAssets="compile" />
-    <PackageReference Include="SixLabors.ImageSharp" />
+    <PackageReference Include="TraumaStation.ImageSharp" />
     <PackageReference Include="OpenToolkit.Graphics" PrivateAssets="compile" />
     <PackageReference Include="OpenTK.Audio.OpenAL" PrivateAssets="compile" />
     <PackageReference Include="SpaceWizards.SharpFont" PrivateAssets="compile" />

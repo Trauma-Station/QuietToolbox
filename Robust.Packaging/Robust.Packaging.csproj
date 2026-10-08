@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="YamlDotNet" />
-    <PackageReference Include="SixLabors.ImageSharp" />
+    <PackageReference Include="TraumaStation.ImageSharp" />
   </ItemGroup>
 
   <ItemGroup>

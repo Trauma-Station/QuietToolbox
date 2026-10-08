@@ -60,7 +60,7 @@
     <PackageVersion Include="Serilog" Version="4.3.0" />
     <PackageVersion Include="Serilog.Sinks.Loki" Version="4.0.0-beta3" />
     <PackageVersion Include="SharpZstd.Interop" Version="1.5.2-beta2" />
-    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageVersion Include="TraumaStation.ImageSharp" Version="5.0.1" />
     <PackageVersion Include="SpaceWizards.HttpListener" Version="0.2.0" />
     <PackageVersion Include="SpaceWizards.NFluidsynth" Version="0.2.2" />
     <PackageVersion Include="SpaceWizards.Sdl" Version="1.1.1" />
@@ -79,7 +79,7 @@
     <PackageVersion Include="prometheus-net.DotNetRuntime" Version="4.4.1" />
     <PackageVersion Include="PolySharp" Version="1.15.0" />
     <PackageVersion Include="System.CommandLine" Version="2.0.1" />
-    <PackageVersion Include="System.Numerics.Tensors" Version="10.0.4" />
+    <PackageVersion Include="System.Numerics.Tensors" Version="10.0.11" />
     <!-- Transitive deps that we need to pin versions for to avoid NuGet warnings. -->
     <PackageVersion Include="System.Formats.Asn1" Version="10.0.0" />
     <PackageVersion Include="System.Reflection.Emit" Version="4.3.0" />
