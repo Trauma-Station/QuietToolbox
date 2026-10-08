@@ -14,7 +14,7 @@ namespace Robust.Client.Utility
             return new(color.R, color.G, color.B, color.A);
         }
 
-        public static Color ConvertImgSharp(this Color.Color color)
+        public static Color ConvertImgSharp(this SixLabors.ImageSharp.Color.Color color)
         {
             return new(color.ToScaledVector4());
         }
