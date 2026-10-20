@@ -95,6 +95,8 @@ namespace Robust.Client.GameStates
         [Dependency] private IRuntimeLog _runtimeLog = default!;
         [Dependency] private ILogManager _logMan = default!;
 
+        public IEntityManager EntMan => _entities;
+
         private ISawmill _sawmill = default!;
         private ClientChunkEntitySystem? _chunkEntities;
 

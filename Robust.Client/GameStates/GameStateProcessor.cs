@@ -16,6 +16,7 @@ namespace Robust.Client.GameStates
     {
         private readonly IClientGameTiming _timing;
         private readonly IClientGameStateManager _state;
+        private readonly IEntityManager _ent;
         private readonly ISawmill _logger;
 
         private readonly List<GameState> _stateBuffer = new();
@@ -75,6 +76,7 @@ namespace Robust.Client.GameStates
             _timing = timing;
             _state = state;
             _logger = logger;
+            _ent = _state.EntMan;
         }
 
         /// <inheritdoc />
@@ -246,7 +248,7 @@ Had full state: {LastFullState != null}"
                         //
                         // Without this, the client won't be able to reset predicted changes made to this component.
                         compData.Remove(change.NetID);
-                        DebugTools.Assert("Received delta state without having received or constructed an implicit full state");
+                        DebugTools.Assert($"Received delta state {delta} on {_ent.ToPrettyString(_ent.GetEntity(entityState.NetEntity))} without having received or constructed an implicit full state");
                         continue;
                     }
 

@@ -16,6 +16,11 @@ namespace Robust.Client.GameStates
     public interface IClientGameStateManager
     {
         /// <summary>
+        /// Reference to the entity manager.
+        /// </summary>
+        IEntityManager EntMan { get; }
+
+        /// <summary>
         ///     Minimum number of states needed in the buffer for everything to work.
         /// </summary>
         /// <remarks>
