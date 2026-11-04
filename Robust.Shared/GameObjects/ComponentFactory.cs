@@ -320,6 +320,9 @@ namespace Robust.Shared.GameObjects
 
         public ComponentRegistration GetRegistration(string componentName, bool ignoreCase = false)
         {
+            if (_names.Count == 0)
+                throw new Exception($"Tried to get component registration for {componentName} before components were loaded!");
+
             if (ignoreCase && _lowerCaseNames.TryGetValue(componentName, out var lowerCaseName))
             {
                 componentName = lowerCaseName;

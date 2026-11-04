@@ -565,7 +565,17 @@ namespace Robust.Shared.Prototypes
                 if (v.Inheritance == null)
                     continue;
 
-                var task = Task.Run(() => PushKindInheritance(k, v));
+                var task = Task.Run(() =>
+                {
+                    try
+                    {
+                        PushKindInheritance(k, v);
+                    }
+                    catch (Exception e)
+                    {
+                        Sawmill?.Error($"Caught exception while pushing inheritance for kind {k}: {e}");
+                    }
+                });
                 inheritanceTasks.Add(k, task);
             }
 
