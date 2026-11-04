@@ -565,11 +565,11 @@ namespace Robust.Shared.Prototypes
                 if (v.Inheritance == null)
                     continue;
 
-                var task = Task.Run(() =>
+                var task = Task.Run(async () =>
                 {
                     try
                     {
-                        PushKindInheritance(k, v);
+                        await PushKindInheritance(k, v);
                     }
                     catch (Exception e)
                     {
