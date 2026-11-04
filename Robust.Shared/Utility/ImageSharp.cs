@@ -26,15 +26,9 @@ internal static class ImageSharp
         new PngImageFormatDetector(),
         new JpegImageFormatDetector(),
         new GifImageFormatDetector(),
-        new BmpImageFormatDetector(),
-        new TgaImageFormatDetector(),
 
         // Webp is registered in clyde and used in WizDen
         new WebpImageFormatDetector(),
-
-        // No usages (consider removal at some point):
-        new QoiImageFormatDetector(),
-        new PbmImageFormatDetector()
 
         // Has (or had) vulnerabilities:
         // new TiffImageFormatDetector()
