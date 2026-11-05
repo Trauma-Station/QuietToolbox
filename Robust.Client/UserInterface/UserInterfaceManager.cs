@@ -35,7 +35,7 @@ namespace Robust.Client.UserInterface
         /// </summary>
         public static readonly Type XamlHotReloadWarmupType = typeof(DropDownDebugConsole);
 
-        [Dependency] private ClientGameStateManager _gameState = default!;
+        [Dependency] private IClientGameStateManager _gameState = default!;
         [Dependency] private IDependencyCollection _rootDependencies = default!;
         [Dependency] private IInputManager _inputManager = default!;
         [Dependency] private IFontManager _fontManager = default!;
@@ -110,7 +110,8 @@ namespace Robust.Client.UserInterface
 
         public void Initialize()
         {
-            _gameState.OnStateError += OnStateError;
+            if (_gameState is ClientGameStateManager gameState)
+                gameState.OnStateError += OnStateError;
 
             _dependencies = new DependencyCollection(_rootDependencies);
             _configurationManager.OnValueChanged(CVars.DisplayUIScale, _uiScaleChanged, true);
