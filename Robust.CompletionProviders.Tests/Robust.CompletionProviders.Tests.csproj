@@ -9,9 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzer.Testing"/>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces"/>
     <PackageReference Include="Microsoft.CodeAnalysis.Features"/>
     <PackageReference Include="NUnit"/>
     <PackageReference Include="NUnit.Analyzers"/>
+    <PackageReference Include="NUnit3TestAdapter"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk"/>
   </ItemGroup>
 
   <ItemGroup>
