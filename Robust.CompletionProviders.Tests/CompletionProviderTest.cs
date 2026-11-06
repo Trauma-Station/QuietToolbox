@@ -114,7 +114,6 @@ public sealed class CompletionProviderTest<T> where T : CompletionProvider, new(
         {
             var id = ProjectId.CreateNewId(name);
             solution = solution.AddProject(id, name, name, LanguageNames.CSharp);
-            var p = solution.GetProject(id);
 
             // Add documents for the additional project.
             foreach (var (filename, content) in state.Sources)
