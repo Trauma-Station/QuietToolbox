@@ -62,6 +62,7 @@
   </ItemGroup>
 
   <Import Project="..\MSBuild\Robust.Properties.targets" />
+  <Import Project="..\MSBuild\Robust.CompletionProviders.targets" />
   <Import Project="..\MSBuild\Robust.CompNetworkGenerator.targets" />
   <Import Project="..\MSBuild\Robust.EntitySystemSubscriptionsGenerator.targets" />
 </Project>

@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../Robust.Roslyn.Shared/Robust.Roslyn.Shared.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Features" />
+  </ItemGroup>
+
+</Project>
