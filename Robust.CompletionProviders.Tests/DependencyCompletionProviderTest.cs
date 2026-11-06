@@ -50,6 +50,14 @@ public sealed class DependencyCompletionProviderTest
     [TestCase("protected", "INullableDependency?", "NullableDependency = default;")]
     [TestCase("protected", "ISomeGeneric<SomeThing>", "SomeThingSomeGeneric = default!;")]
     [TestCase("protected", "ISomeGeneric<int>", "IntSomeGeneric = default!;")]
+    // Public
+    [TestCase("public", "IMyDependency", "MyDependency = default!;")]
+    [TestCase("public", "IEntityManager", "EntMan = default!;")]
+    [TestCase("public", "EntityQuery<ThingComponent>", "ThingQuery = default;")]
+    // Internal
+    [TestCase("internal", "IMyDependency", "_myDependency = default!;")]
+    [TestCase("internal", "IEntityManager", "_entMan = default!;")]
+    [TestCase("internal", "EntityQuery<ThingComponent>", "_thingQuery = default;")]
     public async Task VerifyDependency(string accessMod, string typeName, string expected)
     {
         string source = $$"""
