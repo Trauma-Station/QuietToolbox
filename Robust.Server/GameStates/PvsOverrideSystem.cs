@@ -14,7 +14,6 @@ namespace Robust.Server.GameStates;
 
 public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
 {
-    [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IConsoleHost _console = default!;
 
     private readonly HashSet<EntityUid> _hasOverride = new();
@@ -28,7 +27,6 @@ public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
     {
         base.Initialize();
         EntityManager.EntityDeleted += OnDeleted;
-        _player.PlayerStatusChanged += OnPlayerStatusChanged;
         SubscribeLocalEvent<MapRemovedEvent>(OnMapRemoved);
         SubscribeLocalEvent<MapCreatedEvent>(OnMapCreated);
         SubscribeLocalEvent<GridInitializeEvent>(OnGridCreated);
@@ -91,20 +89,10 @@ public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
 
     #endregion
 
-    private void OnPlayerStatusChanged(object? sender, SessionStatusEventArgs ev)
-    {
-        if (ev.NewStatus != SessionStatus.Disconnected)
-            return;
-
-        SessionOverrides.Remove(ev.Session);
-        SessionForceSend.Remove(ev.Session);
-    }
-
     public override void Shutdown()
     {
         base.Shutdown();
         EntityManager.EntityDeleted -= OnDeleted;
-        _player.PlayerStatusChanged -= OnPlayerStatusChanged;
     }
 
     private void OnDeleted(Entity<MetaDataComponent> entity)
