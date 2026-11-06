@@ -7,6 +7,7 @@ using Robust.Shared.Enums;
 using Robust.Shared.GameObjects;
 using Robust.Shared.GameStates;
 using Robust.Shared.IoC;
+using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
 
@@ -14,21 +15,19 @@ namespace Robust.Server.GameStates;
 
 public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
 {
-    [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IConsoleHost _console = default!;
 
     private readonly HashSet<EntityUid> _hasOverride = new();
 
     internal HashSet<EntityUid> GlobalOverride = new();
     internal HashSet<EntityUid> ForceSend = new();
-    internal Dictionary<ICommonSession, HashSet<EntityUid>> SessionOverrides = new();
-    internal Dictionary<ICommonSession, HashSet<EntityUid>> SessionForceSend = new();
+    internal Dictionary<NetUserId, HashSet<EntityUid>> SessionOverrides = new();
+    internal Dictionary<NetUserId, HashSet<EntityUid>> SessionForceSend = new();
 
     public override void Initialize()
     {
         base.Initialize();
         EntityManager.EntityDeleted += OnDeleted;
-        _player.PlayerStatusChanged += OnPlayerStatusChanged;
         SubscribeLocalEvent<MapRemovedEvent>(OnMapRemoved);
         SubscribeLocalEvent<MapCreatedEvent>(OnMapCreated);
         SubscribeLocalEvent<GridInitializeEvent>(OnGridCreated);
@@ -71,7 +70,7 @@ public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
         if (GlobalOverride.Contains(uid.Value) || ForceSend.Contains(uid.Value))
             shell.WriteLine(Loc.GetString("cmd-pvs-override-info-global", ("nuid", args[0])));
 
-        HashSet<ICommonSession> sessions = new();
+        HashSet<NetUserId> sessions = new();
         sessions.UnionWith(SessionOverrides.Where(x => x.Value.Contains(uid.Value)).Select(x => x.Key));
         sessions.UnionWith(SessionForceSend.Where(x => x.Value.Contains(uid.Value)).Select(x => x.Key));
         if (sessions.Count == 0)
@@ -91,20 +90,10 @@ public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
 
     #endregion
 
-    private void OnPlayerStatusChanged(object? sender, SessionStatusEventArgs ev)
-    {
-        if (ev.NewStatus != SessionStatus.Disconnected)
-            return;
-
-        SessionOverrides.Remove(ev.Session);
-        SessionForceSend.Remove(ev.Session);
-    }
-
     public override void Shutdown()
     {
         base.Shutdown();
         EntityManager.EntityDeleted -= OnDeleted;
-        _player.PlayerStatusChanged -= OnPlayerStatusChanged;
     }
 
     private void OnDeleted(Entity<MetaDataComponent> entity)
@@ -187,7 +176,7 @@ public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
     /// </remarks>
     public void AddForceSend(EntityUid uid, ICommonSession session)
     {
-        if (SessionForceSend.GetOrNew(session).Add(uid))
+        if (SessionForceSend.GetOrNew(session.UserId).Add(uid))
             _hasOverride.Add(uid);
     }
 
@@ -196,11 +185,11 @@ public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
     /// </summary>
     public void RemoveForceSend(EntityUid uid, ICommonSession session)
     {
-        if (!SessionForceSend.TryGetValue(session, out var overrides))
+        if (!SessionForceSend.TryGetValue(session.UserId, out var overrides))
             return;
 
         if (overrides.Remove(uid) && overrides.Count == 0)
-            SessionForceSend.Remove(session);
+            SessionForceSend.Remove(session.UserId);
 
         // Not bothering to clear _hasOverride, as we'd have to check all the other collections, and at that point we
         // might as well just do that when the entity gets deleted anyways.
@@ -215,7 +204,7 @@ public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
     {
         base.AddSessionOverride(uid, session);
 
-        if (SessionOverrides.GetOrNew(session).Add(uid))
+        if (SessionOverrides.GetOrNew(session.UserId).Add(uid))
             _hasOverride.Add(uid);
     }
 
@@ -226,11 +215,11 @@ public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
     {
         base.RemoveSessionOverride(uid, session);
 
-        if (!SessionOverrides.TryGetValue(session, out var overrides))
+        if (!SessionOverrides.TryGetValue(session.UserId, out var overrides))
             return;
 
         if (overrides.Remove(uid) && overrides.Count == 0)
-            SessionOverrides.Remove(session);
+            SessionOverrides.Remove(session.UserId);
 
         // Not bothering to clear _hasOverride, as we'd have to check all the other collections, and at that point we
         // might as well just do that when the entity gets deleted anyways.
@@ -248,7 +237,7 @@ public sealed partial class PvsOverrideSystem : SharedPvsOverrideSystem
 
         foreach (var session in filter.Recipients)
         {
-            SessionOverrides.GetOrNew(session).Add(uid);
+            SessionOverrides.GetOrNew(session.UserId).Add(uid);
         }
     }
 

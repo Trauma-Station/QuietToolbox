@@ -33,7 +33,7 @@ internal sealed partial class PvsSystem
                 AddEntity(session, ref ent, ref meta, fromTick);
         }
 
-        if (!_pvsOverride.SessionOverrides.TryGetValue(session.Session, out var sessionOverrides))
+        if (!_pvsOverride.SessionOverrides.TryGetValue(session.Session.UserId, out var sessionOverrides))
             return;
 
         foreach (var uid in sessionOverrides)
@@ -66,7 +66,7 @@ internal sealed partial class PvsSystem
             RecursivelyAddOverride(session, uid, fromTick, addChildren: false, mask);
         }
 
-        if (!_pvsOverride.SessionForceSend.TryGetValue(session.Session, out var sessionForce))
+        if (!_pvsOverride.SessionForceSend.TryGetValue(session.Session.UserId, out var sessionForce))
             return;
 
         foreach (var uid in sessionForce)
