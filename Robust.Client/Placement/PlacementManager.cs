@@ -351,7 +351,8 @@ namespace Robust.Client.Placement
             }
             else
             {
-                _entitySystemManager.GetEntitySystem<InputSystem>().SetEntityContextActive();
+                if (_entitySystemManager.TryGetEntitySystem<InputSystem>(out var input))
+                    input.SetEntityContextActive();
             }
         }
 
