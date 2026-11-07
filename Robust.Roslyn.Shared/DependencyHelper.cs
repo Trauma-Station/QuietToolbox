@@ -25,7 +25,7 @@ public static class DependencyHelper
     private const string SystemSuffix = "System";
     private const string ManagerSuffix = "Manager";
     private const string ManagerSuffixReplacement = "Man";
-    private readonly static string[] SidePrefixes = ["Shared", "Server", "Client", "Common"];
+    private readonly static string[] PrefixesToRemove = ["Shared", "Server", "Client", "Common"];
 
     /// <summary>
     /// Checks if <paramref name="node"/> has the [Dependency] attribute.
@@ -67,7 +67,7 @@ public static class DependencyHelper
             : RemoveLeadingIFromInterface(typeSyntax.ToString());
 
         // Remove leading side prefixes.
-        foreach (var prefix in SidePrefixes)
+        foreach (var prefix in PrefixesToRemove)
         {
             if (typeName.StartsWith(prefix))
                 typeName = typeName.Substring(prefix.Length);
