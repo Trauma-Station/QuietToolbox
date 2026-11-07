@@ -23,6 +23,8 @@ public static class DependencyHelper
     private const string EntityQueryName = "EntityQuery";
     private const string ComponentSuffix = "Component";
     private const string SystemSuffix = "System";
+    private const string ManagerSuffix = "Manager";
+    private const string ManagerSuffixReplacement = "Man";
     private readonly static string[] SidePrefixes = ["Shared", "Server", "Client"];
 
     /// <summary>
@@ -78,6 +80,10 @@ public static class DependencyHelper
         // Remove trailing 'System' from EntitySystem names.
         if (typeName.EndsWith(SystemSuffix))
             typeName = typeName.Substring(0, typeName.Length - SystemSuffix.Length);
+
+        // Shorten "Manager" to "Man"
+        if (typeName.EndsWith(ManagerSuffix))
+            typeName = $"{typeName.Substring(0, typeName.Length - ManagerSuffix.Length)}{ManagerSuffixReplacement}";
 
         return accessibility switch
         {
