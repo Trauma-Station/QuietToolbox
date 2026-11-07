@@ -25,7 +25,7 @@ public static class DependencyHelper
     private const string SystemSuffix = "System";
     private const string ManagerSuffix = "Manager";
     private const string ManagerSuffixReplacement = "Man";
-    private readonly static string[] SidePrefixes = ["Shared", "Server", "Client"];
+    private readonly static string[] SidePrefixes = ["Shared", "Server", "Client", "Common"];
 
     /// <summary>
     /// Checks if <paramref name="node"/> has the [Dependency] attribute.
