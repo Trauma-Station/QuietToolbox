@@ -1131,6 +1131,7 @@ internal sealed partial class PrototypePartialTest
         Assert.That(partial.Dictionary, Is.Empty);
     }
 
+    /* This isn't a desired use case
     [Test]
     public void PartialOnlyTagWithIndexNoExistingNoPrototypeAddSequenceTest()
     {
@@ -1146,6 +1147,7 @@ internal sealed partial class PrototypePartialTest
         var prototypes = sim.Resolve<IPrototypeManager>();
         Assert.That(prototypes.HasIndex(SequenceId), Is.False);
     }
+    */
 
     [Test]
     public void PartialOnlyTagOrderingTest()
