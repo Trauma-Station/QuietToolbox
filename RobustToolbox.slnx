@@ -35,6 +35,7 @@
   <Folder Name="/MSBuild/">
     <File Path="MSBuild/MacOSAppBundle.targets" />
     <File Path="MSBuild/Robust.Analyzers.targets" />
+    <File Path="MSBuild/Robust.CompletionProviders.targets" />
     <File Path="MSBuild/Robust.CompNetworkGenerator.targets" />
     <File Path="MSBuild/Robust.EntitySystemSubscriptionsGenerator.targets" />
     <File Path="MSBuild/Robust.Configurations.props" />
@@ -55,6 +56,12 @@
     <File Path="README.md" />
     <File Path="RELEASE-NOTES.md" />
   </Folder>
+  <Folder Name="/Robust.CompletionProviders/">
+    <Project Path="Robust.CompletionProviders/Robust.CompletionProviders.csproj">
+      <BuildType Solution="DebugOpt|*" Project="Debug" />
+      <BuildType Solution="Tools|*" Project="Debug" />
+    </Project>
+  </Folder>
   <Folder Name="/Robust.LoaderApi/">
     <Project Path="Robust.LoaderApi/Robust.LoaderApi/Robust.LoaderApi.csproj">
       <BuildType Solution="DebugOpt|*" Project="Debug" />
@@ -70,6 +77,10 @@
     <Project Path="Robust.Client.NameGenerator/Robust.Client.NameGenerator.csproj">
       <BuildType Solution="DebugOpt|*" Project="Debug" />
       <BuildType Solution="Tools|*" Project="Release" />
+    </Project>
+    <Project Path="Robust.CompletionProviders.Tests/Robust.CompletionProviders.Tests.csproj">
+      <BuildType Solution="DebugOpt|*" Project="Debug" />
+      <BuildType Solution="Tools|*" Project="Debug" />
     </Project>
     <Project Path="Robust.Serialization.Generator/Robust.Serialization.Generator.csproj">
       <BuildType Solution="DebugOpt|*" Project="Debug" />
