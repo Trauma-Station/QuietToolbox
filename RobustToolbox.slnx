@@ -61,7 +61,12 @@
     <File Path="README.md" />
     <File Path="RELEASE-NOTES.md" />
   </Folder>
-  <Folder Name="/Robust.CompletionProviders/" />
+  <Folder Name="/Robust.CompletionProviders/">
+    <Project Path="Robust.CompletionProviders/Robust.CompletionProviders.csproj">
+      <BuildType Solution="DebugOpt|*" Project="Debug" />
+      <BuildType Solution="Tools|*" Project="Debug" />
+    </Project>
+  </Folder>
   <Folder Name="/Robust.LoaderApi/">
     <Project Path="Robust.LoaderApi/Robust.LoaderApi/Robust.LoaderApi.csproj">
       <BuildType Solution="DebugOpt|*" Project="Debug" />
@@ -78,7 +83,7 @@
       <BuildType Solution="DebugOpt|*" Project="Debug" />
       <BuildType Solution="Tools|*" Project="Release" />
     </Project>
-    <Project Path="Robust.CompletionProviders/Robust.CompletionProviders.csproj">
+    <Project Path="Robust.CompletionProviders.Tests/Robust.CompletionProviders.Tests.csproj">
       <BuildType Solution="DebugOpt|*" Project="Debug" />
       <BuildType Solution="Tools|*" Project="Debug" />
     </Project>
@@ -133,10 +138,6 @@
   <Project Path="Robust.Client.IntegrationTests/Robust.Client.IntegrationTests.csproj" />
   <Project Path="Robust.Client.Tests/Robust.Client.Tests.csproj" />
   <Project Path="Robust.Client/Robust.Client.csproj" />
-  <Project Path="Robust.CompletionProviders.Tests/Robust.CompletionProviders.Tests.csproj">
-    <BuildType Solution="DebugOpt|*" Project="Debug" />
-    <BuildType Solution="Tools|*" Project="Debug" />
-  </Project>
   <Project Path="Robust.Packaging.Tests/Robust.Packaging.Tests.csproj" />
   <Project Path="Robust.Packaging/Robust.Packaging.csproj" />
   <Project Path="Robust.Server.IntegrationTests/Robust.Server.IntegrationTests.csproj" />
