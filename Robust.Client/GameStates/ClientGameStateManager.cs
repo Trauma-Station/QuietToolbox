@@ -896,7 +896,7 @@ namespace Robust.Client.GameStates
                         continue;
                     }
 
-                    if (CreateNewEntity(es, curState.ToSequence))
+                    if (TryCreateNewEntity(es, curState.ToSequence))
                         created++;
                 }
 
@@ -1123,7 +1123,7 @@ namespace Robust.Client.GameStates
                 _queuedBroadphaseUpdates.Add((data.Uid, xform));
         }
 
-        private bool CreateNewEntity(EntityState state, GameTick toTick)
+        private bool TryCreateNewEntity(EntityState state, GameTick toTick)
         {
             // TODO GAME STATE
             // store MetaData & Transform information separately.
@@ -1463,7 +1463,7 @@ namespace Robust.Client.GameStates
 
                 if (!xforms.TryComp(uid, out var xform))
                 {
-                    _sawmill.Warning($"Server state said to detach entity {netEntity} / {_entities.ToPrettyString(uid, metadata)} but it had no transform?!");
+                    _sawmill.Warning($"Server state said to detach entity {netEntity} / {_entities.ToPrettyString(uid, metadata)} but it had no transform");
                     continue;
                 }
 
