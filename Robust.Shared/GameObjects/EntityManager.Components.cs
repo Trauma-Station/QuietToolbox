@@ -491,7 +491,7 @@ namespace Robust.Shared.GameObjects
             if (!TryGetComponent(uid, type, out var comp))
                 return false;
 
-            RemoveComponentDeferred(comp, uid, false);
+            RemoveComponentDeferred(comp, uid, false, null);
             return true;
         }
 
@@ -505,20 +505,20 @@ namespace Robust.Shared.GameObjects
             if (!TryGetComponent(uid, netId, out var comp, meta))
                 return false;
 
-            RemoveComponentDeferred(comp, uid, false);
+            RemoveComponentDeferred(comp, uid, false, meta);
             return true;
         }
 
         /// <inheritdoc />
         public void RemoveComponentDeferred(EntityUid owner, IComponent component)
         {
-            RemoveComponentDeferred(component, owner, false);
+            RemoveComponentDeferred(component, owner, false, null);
         }
 
         /// <inheritdoc />
         public void RemoveComponentDeferred(EntityUid owner, Component component)
         {
-            RemoveComponentDeferred(component, owner, false);
+            RemoveComponentDeferred(component, owner, false, null);
         }
 
         /// <summary>
@@ -580,7 +580,11 @@ namespace Robust.Shared.GameObjects
             _entCompIndex.Remove(uid);
         }
 
-        private void RemoveComponentDeferred(IComponent component, EntityUid uid, bool terminating)
+        private void RemoveComponentDeferred(
+            IComponent component,
+            EntityUid uid,
+            bool terminating,
+            MetaDataComponent? meta)
         {
             if (component == null)
                 throw new ArgumentNullException(nameof(component));
@@ -614,7 +618,10 @@ namespace Robust.Shared.GameObjects
             DebugTools.Assert(component.LifeStage >= ComponentLifeStage.Added);
 
             if (component.LifeStage is >= ComponentLifeStage.Initialized and < ComponentLifeStage.Stopping)
-                LifeShutdown(uid, component, _componentFactory.GetIndex(component.GetType()));
+            {
+                meta ??= MetaQuery.GetComponentInternal(uid);
+                LifeShutdown(uid, component, meta, _componentFactory.GetIndex(component.GetType()));
+            }
             else if (component.LifeStage == ComponentLifeStage.Added)
             {
                 // The component was added, but never initialized or started. It's kinda weird to add and then
@@ -657,10 +664,6 @@ namespace Robust.Shared.GameObjects
             if (component.Deleted)
                 return;
 
-#if EXCEPTION_TOLERANCE
-            try
-            {
-#endif
             // these two components are required on all entities and cannot be removed.
             if (!terminating && component is TransformComponent or MetaDataComponent)
             {
@@ -668,8 +671,17 @@ namespace Robust.Shared.GameObjects
                 return;
             }
 
+            if (!MetaQuery.ResolveInternal(uid, ref meta))
+            {
+                return;
+            }
+
+#if EXCEPTION_TOLERANCE
+            try
+            {
+#endif
             if (component.Running)
-                LifeShutdown(uid, component, idx);
+                LifeShutdown(uid, component, meta, idx);
 
             if (component.LifeStage != ComponentLifeStage.PreAdd)
                 LifeRemoveFromEntity(uid, component, idx); // Sets delete
@@ -694,6 +706,7 @@ namespace Robust.Shared.GameObjects
                     continue;
                 var uid = component.Owner;
                 var idx = _componentFactory.GetIndex(component.GetType());
+                var meta = MetaQuery.GetComponent(uid);
 
 #if EXCEPTION_TOLERANCE
             try
@@ -704,7 +717,7 @@ namespace Robust.Shared.GameObjects
                 {
                     // TODO add options to cancel deferred deletion?
                     _sawmill.Warning($"Found a running component while culling deferred deletions, owner={ToPrettyString(uid)}, type={component.GetType()}");
-                    LifeShutdown(uid, component, idx);
+                    LifeShutdown(uid, component, meta, idx);
                 }
 
                 if (component.LifeStage != ComponentLifeStage.PreAdd)
@@ -718,7 +731,6 @@ namespace Robust.Shared.GameObjects
                 _runtimeLog.LogException(e, nameof(CullRemovedComponents));
             }
 #endif
-                var meta = MetaQuery.GetComponent(uid);
                 DeleteComponent(uid, component, idx, false, meta);
             }
 
@@ -730,11 +742,8 @@ namespace Robust.Shared.GameObjects
             IComponent component,
             CompIdx idx,
             bool terminating,
-            MetaDataComponent? metadata)
+            MetaDataComponent metadata)
         {
-            if (!MetaQuery.ResolveInternal(entityUid, ref metadata))
-                return;
-
             var eventArgs = new RemovedComponentEventArgs(new ComponentEventArgs(component, entityUid), false, metadata, idx);
             ComponentRemoved?.Invoke(eventArgs);
             EventBusInternal.OnComponentRemoved(eventArgs);
